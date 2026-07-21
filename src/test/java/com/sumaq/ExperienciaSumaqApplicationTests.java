@@ -42,6 +42,18 @@ class ExperienciaSumaqApplicationTests {
 	}
 
 	@Test
+	void healthEsPublicoPeroInfoYMetricasRequierenAutenticacion() throws Exception {
+		mockMvc.perform(get("/actuator/health"))
+				.andExpect(status().isOk());
+		mockMvc.perform(get("/actuator/info"))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/login"));
+		mockMvc.perform(get("/actuator/metrics"))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/login"));
+	}
+
+	@Test
 	@WithMockUser(username = "cocinero", roles = "COCINA")
 	void rolCocinaAccedeSoloASuPanel() throws Exception {
 		mockMvc.perform(get("/cocina"))
@@ -69,6 +81,15 @@ class ExperienciaSumaqApplicationTests {
 		mockMvc.perform(get("/personal"))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/admin"));
+	}
+
+	@Test
+	@WithMockUser(username = "administrador", roles = "ADMINISTRADOR")
+	void rolAdministradorConsultaInfoYMetricas() throws Exception {
+		mockMvc.perform(get("/actuator/info"))
+				.andExpect(status().isOk());
+		mockMvc.perform(get("/actuator/metrics"))
+				.andExpect(status().isOk());
 	}
 
 	@Test
