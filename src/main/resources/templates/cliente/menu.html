@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Menú de Experiencia Sumaq con productos disponibles por categoría.">
+    <title>Menú | Experiencia Sumaq</title>
+    <link rel="stylesheet" th:href="@{/css/sumaq.css}">
+    <script th:src="@{/js/sumaq.js}" defer></script>
+</head>
+<body class="menu-page">
+<header th:replace="~{fragments/cabecera :: cabecera(${paginaActiva})}"></header>
+
+<main class="catalog-shell">
+    <header class="catalog-intro reveal">
+        <div>
+            <p class="eyebrow">Sabores disponibles hoy</p>
+            <h1>Nuestro menú</h1>
+            <p>Elige una categoría y encuentra una propuesta preparada con ingredientes peruanos.</p>
+        </div>
+        <div class="catalog-badge"><span aria-hidden="true">●</span> Catálogo conectado</div>
+    </header>
+
+    <div class="catalog-layout">
+        <aside class="category-panel" aria-label="Categorías del menú">
+            <h2>Categorías</h2>
+            <nav>
+                <a th:each="categoria : ${catalogo.categorias()}"
+                   th:href="@{/menu(categoria=${categoria.id()})}"
+                   th:text="${categoria.nombre()}"
+                   th:classappend="${catalogo.categoriaSeleccionada() != null and categoria.id() == catalogo.categoriaSeleccionada().id()} ? ' active'">
+                    Categoría
+                </a>
+            </nav>
+        </aside>
+
+        <section class="product-section" aria-labelledby="category-title">
+            <div class="product-heading">
+                <div>
+                    <p class="eyebrow">Selección Sumaq</p>
+                    <h2 id="category-title"
+                        th:text="${catalogo.categoriaSeleccionada() != null ? catalogo.categoriaSeleccionada().nombre() : 'Menú'}">
+                        Entradas
+                    </h2>
+                </div>
+                <p th:text="|${catalogo.productos().size()} productos disponibles|">0 productos disponibles</p>
+            </div>
+
+            <div class="product-grid" th:if="${!catalogo.productos().isEmpty()}">
+                <article class="product-card reveal" th:each="producto : ${catalogo.productos()}">
+                    <div class="product-image-wrap">
+                        <img th:src="@{${producto.rutaImagen()}}" th:alt="|Presentación de ${producto.nombre()}|">
+                        <span class="product-tag" th:text="${producto.categoria()}">Categoría</span>
+                    </div>
+                    <div class="product-content">
+                        <div>
+                            <h3 th:text="${producto.nombre()}">Producto</h3>
+                            <p th:text="${producto.descripcion()}">Descripción</p>
+                        </div>
+                        <div class="product-meta" th:if="${producto.calorias() != null}">
+                            <span th:text="|${producto.calorias()} kcal|">0 kcal</span>
+                        </div>
+                        <div class="product-action">
+                            <strong th:text="|S/ ${#numbers.formatDecimal(producto.precio(), 1, 2)}|">S/ 0.00</strong>
+                            <button type="button" class="add-button js-cart-preview"
+                                    th:attr="data-product=${producto.nombre()}"
+                                    th:aria-label="|Agregar ${producto.nombre()} al carrito|">
+                                <span aria-hidden="true">＋</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <div class="empty-state" th:if="${catalogo.productos().isEmpty()}">
+                <span aria-hidden="true">🍽</span>
+                <h3>No hay productos disponibles</h3>
+                <p>Estamos actualizando esta categoría. Prueba nuevamente en unos minutos.</p>
+            </div>
+        </section>
+
+        <aside class="cart-preview" aria-labelledby="cart-title">
+            <div>
+                <p class="eyebrow">Tu selección</p>
+                <h2 id="cart-title">Carrito</h2>
+            </div>
+            <div class="cart-preview-empty">
+                <span aria-hidden="true">🛒</span>
+                <p>Aún no agregaste productos.</p>
+                <small>El carrito persistente se habilita en el siguiente incremento de esta etapa.</small>
+            </div>
+            <button class="button" type="button" disabled>Continuar pedido</button>
+        </aside>
+    </div>
+</main>
+
+<div class="toast" role="status" aria-live="polite" hidden></div>
+<footer th:replace="~{fragments/cabecera :: pie}"></footer>
+</body>
+</html>

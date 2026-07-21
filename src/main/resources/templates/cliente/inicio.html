@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Experiencia Sumaq: cocina peruana contemporánea con ingredientes andinos.">
+    <title>Experiencia Sumaq | Cocina peruana contemporánea</title>
+    <link rel="stylesheet" th:href="@{/css/sumaq.css}">
+    <script th:src="@{/js/sumaq.js}" defer></script>
+</head>
+<body>
+<header th:replace="~{fragments/cabecera :: cabecera(${paginaActiva})}"></header>
+
+<main>
+    <section class="hero">
+        <img class="hero-image" th:src="@{/img/hero-sumaq.svg}"
+             alt="Composición ilustrada de ingredientes andinos y cocina peruana">
+        <div class="hero-overlay" aria-hidden="true"></div>
+        <div class="hero-content reveal">
+            <p class="eyebrow light">Cocina peruana contemporánea</p>
+            <h1>Gastronomía que nutre,<br>tradición que inspira.</h1>
+            <p class="hero-copy">Descubre sabores que fusionan superalimentos andinos, recetas peruanas y una mirada moderna al bienestar.</p>
+            <div class="button-row">
+                <a class="button" th:href="@{/menu}">Explorar el menú <span aria-hidden="true">→</span></a>
+                <a class="button button-secondary" th:href="@{/menu}">Realizar pedido</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="filosofia" class="section philosophy" aria-labelledby="philosophy-title">
+        <div class="section-heading reveal">
+            <p class="eyebrow">Nuestra esencia</p>
+            <h2 id="philosophy-title">La filosofía Sumaq</h2>
+            <p>Cuidamos el origen, el sabor y cada detalle de tu experiencia.</p>
+        </div>
+
+        <div class="feature-grid">
+            <article class="feature feature-large reveal">
+                <img th:src="@{/img/origen-andino.svg}" alt="Ilustración de cultivos y montañas andinas">
+                <div class="feature-content">
+                    <span class="feature-icon" aria-hidden="true">🌿</span>
+                    <h3>Ingredientes de origen</h3>
+                    <p>Seleccionamos insumos peruanos y priorizamos productores locales comprometidos con prácticas responsables.</p>
+                </div>
+            </article>
+            <article class="feature reveal">
+                <span class="feature-icon coral" aria-hidden="true">♡</span>
+                <h3>Nutrición equilibrada</h3>
+                <p>Platos pensados para disfrutar ingredientes reales, frescos y llenos de identidad.</p>
+            </article>
+            <article class="feature reveal">
+                <span class="feature-icon gold" aria-hidden="true">✦</span>
+                <h3>Preparación cuidadosa</h3>
+                <p>Procesos simples y consistentes que conservan la calidad hasta el momento del recojo.</p>
+            </article>
+            <article class="feature feature-cta reveal">
+                <p class="eyebrow light">Una experiencia para compartir</p>
+                <h3>Tu próximo sabor favorito está aquí.</h3>
+                <a th:href="@{/menu}">Conocer el menú <span aria-hidden="true">→</span></a>
+            </article>
+        </div>
+    </section>
+
+    <section class="section menu-callout reveal">
+        <div>
+            <p class="eyebrow">Preparado para ti</p>
+            <h2>Elige, confirma y recoge.</h2>
+            <p>Consulta la disponibilidad del día directamente desde nuestro catálogo.</p>
+        </div>
+        <a class="button" th:href="@{/menu}">Ver productos</a>
+    </section>
+</main>
+
+<footer th:replace="~{fragments/cabecera :: pie}"></footer>
+</body>
+</html>
