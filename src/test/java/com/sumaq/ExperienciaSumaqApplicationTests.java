@@ -59,4 +59,23 @@ class ExperienciaSumaqApplicationTests {
 				.andExpect(status().isForbidden());
 	}
 
+	@Test
+	@WithMockUser(username = "administrador", roles = "ADMINISTRADOR")
+	void rolAdministradorAccedeAlPanelYPortalLoRedirige() throws Exception {
+		mockMvc.perform(get("/admin"))
+				.andExpect(status().isOk());
+		mockMvc.perform(get("/admin/productos/nuevo"))
+				.andExpect(status().isOk());
+		mockMvc.perform(get("/personal"))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/admin"));
+	}
+
+	@Test
+	@WithMockUser(username = "cocinero", roles = "COCINA")
+	void rolCocinaNoAccedeAAdministracion() throws Exception {
+		mockMvc.perform(get("/admin"))
+				.andExpect(status().isForbidden());
+	}
+
 }
