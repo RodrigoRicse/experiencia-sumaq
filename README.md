@@ -1,8 +1,14 @@
 # Experiencia Sumaq
 
+[![CI](https://github.com/RodrigoRicse/experiencia-sumaq/actions/workflows/ci.yml/badge.svg)](https://github.com/RodrigoRicse/experiencia-sumaq/actions/workflows/ci.yml)
+
+Versión actual: `0.4.0`.
+
 Aplicación web para gestionar el catálogo, los pedidos y la operación de cocina, caja y administración de Experiencia Sumaq.
 
 El prototipo React/Vite está preservado sin modificaciones en `prototipo-original/` y se utiliza exclusivamente como referencia visual y funcional.
+
+Consulta [CHANGELOG.md](CHANGELOG.md) para revisar las versiones y [CONTRIBUTING.md](CONTRIBUTING.md) antes de proponer cambios.
 
 ## Estado actual
 
@@ -115,7 +121,7 @@ docker compose stop mysql
 .\mvnw.cmd clean package
 ```
 
-El JAR ejecutable se genera en `target/experiencia-sumaq-0.0.1-SNAPSHOT.jar`.
+El JAR ejecutable se genera en `target/experiencia-sumaq-0.4.0.jar`.
 
 ## Base de datos y Flyway
 
