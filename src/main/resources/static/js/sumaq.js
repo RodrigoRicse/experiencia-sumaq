@@ -14,17 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
         element.textContent = String(new Date().getFullYear());
     });
 
-    const toast = document.querySelector('.toast');
-    document.querySelectorAll('.js-cart-preview').forEach((button) => {
-        button.addEventListener('click', () => {
-            if (!toast) return;
-            toast.textContent = `${button.dataset.product}: carrito disponible en el siguiente incremento.`;
-            toast.hidden = false;
-            window.clearTimeout(window.sumaqToastTimer);
-            window.sumaqToastTimer = window.setTimeout(() => {
-                toast.hidden = true;
-            }, 2800);
-        });
+    document.querySelectorAll('.toast').forEach((toast) => {
+        window.setTimeout(() => toast.remove(), 3200);
     });
 
     const observer = new IntersectionObserver((entries) => {

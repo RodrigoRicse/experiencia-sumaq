@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Confirma tus datos y el pago simulado de tu pedido Experiencia Sumaq.">
+    <title>Confirmar pedido | Experiencia Sumaq</title>
+    <link rel="stylesheet" th:href="@{/css/sumaq.css}">
+    <script th:src="@{/js/sumaq.js}" defer></script>
+</head>
+<body class="checkout-page">
+<header th:replace="~{fragments/cabecera :: cabecera(${paginaActiva})}"></header>
+
+<main class="checkout-shell">
+    <header class="checkout-heading">
+        <a th:href="@{/menu}" class="back-link">← Volver al menú</a>
+        <p class="eyebrow">Último paso</p>
+        <h1>Confirma tu pedido</h1>
+        <p>Completa tus datos y elige el resultado de pago que deseas simular.</p>
+    </header>
+
+    <div class="checkout-layout">
+        <form class="checkout-form" th:action="@{/pedido/confirmar}" th:object="${checkoutForm}" method="post" novalidate>
+            <section class="form-card" aria-labelledby="customer-title">
+                <div class="step-title"><span>1</span><div><h2 id="customer-title">Datos de recojo</h2><p>Los utilizaremos únicamente para identificar tu pedido.</p></div></div>
+                <div class="form-grid">
+                    <label>Nombres
+                        <input type="text" th:field="*{nombres}" autocomplete="given-name" maxlength="100"
+                               th:classappend="${#fields.hasErrors('nombres')} ? ' invalid'">
+                        <small class="field-error" th:errors="*{nombres}"></small>
+                    </label>
+                    <label>Apellidos
+                        <input type="text" th:field="*{apellidos}" autocomplete="family-name" maxlength="100"
+                               th:classappend="${#fields.hasErrors('apellidos')} ? ' invalid'">
+                        <small class="field-error" th:errors="*{apellidos}"></small>
+                    </label>
+                    <label>Teléfono
+                        <input type="tel" th:field="*{telefono}" autocomplete="tel" maxlength="20" placeholder="999 999 999"
+                               th:classappend="${#fields.hasErrors('telefono')} ? ' invalid'">
+                        <small class="field-error" th:errors="*{telefono}"></small>
+                    </label>
+                    <label>Correo electrónico <span>(opcional)</span>
+                        <input type="email" th:field="*{email}" autocomplete="email" maxlength="150"
+                               th:classappend="${#fields.hasErrors('email')} ? ' invalid'">
+                        <small class="field-error" th:errors="*{email}"></small>
+                    </label>
+                    <label class="full-field">Observaciones <span>(opcional)</span>
+                        <textarea th:field="*{observaciones}" maxlength="500" rows="3" placeholder="Ejemplo: sin cebolla"></textarea>
+                        <small class="field-error" th:errors="*{observaciones}"></small>
+                    </label>
+                </div>
+            </section>
+
+            <section class="form-card" aria-labelledby="payment-title">
+                <div class="step-title"><span>2</span><div><h2 id="payment-title">Pago simulado</h2><p>No ingreses datos reales de tarjetas o cuentas.</p></div></div>
+                <fieldset class="payment-options">
+                    <legend>Método de pago</legend>
+                    <label th:each="metodo : ${metodosPago}">
+                        <input type="radio" th:field="*{metodoPago}" th:value="${metodo}">
+                        <span th:text="${metodo == T(com.sumaq.model.MetodoPago).TARJETA ? 'Tarjeta' : metodo == T(com.sumaq.model.MetodoPago).YAPE ? 'Yape' : 'Efectivo'}">Método</span>
+                    </label>
+                    <small class="field-error" th:errors="*{metodoPago}"></small>
+                </fieldset>
+                <fieldset class="payment-options simulation-options">
+                    <legend>Resultado de la simulación</legend>
+                    <label><input type="radio" th:field="*{pagoAprobado}" value="true"><span>Pago aprobado</span></label>
+                    <label><input type="radio" th:field="*{pagoAprobado}" value="false"><span>Pago rechazado</span></label>
+                    <small class="field-error" th:errors="*{pagoAprobado}"></small>
+                </fieldset>
+            </section>
+
+            <button class="button checkout-submit" type="submit">Confirmar y generar código de recojo</button>
+        </form>
+
+        <aside class="order-summary" aria-labelledby="summary-title">
+            <p class="eyebrow">Resumen</p>
+            <h2 id="summary-title">Tu pedido</h2>
+            <div class="summary-items">
+                <article th:each="item : ${carrito.items()}">
+                    <img th:src="@{${item.rutaImagen()}}" th:alt="|Miniatura de ${item.nombre()}|">
+                    <div><h3 th:text="${item.nombre()}">Producto</h3><p th:text="|Cantidad: ${item.cantidad()}|">Cantidad: 1</p></div>
+                    <strong th:text="|S/ ${#numbers.formatDecimal(item.subtotal(), 1, 2)}|">S/ 0.00</strong>
+                </article>
+            </div>
+            <div class="summary-total"><span>Total</span><strong th:text="|S/ ${#numbers.formatDecimal(carrito.total(), 1, 2)}|">S/ 0.00</strong></div>
+            <p class="summary-note">El monto se recalculará en el servidor antes de registrar el pedido.</p>
+        </aside>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/cabecera :: pie}"></footer>
+</body>
+</html>

@@ -23,6 +23,7 @@
             <a class="cart-link" th:href="@{/carrito}" aria-label="Ver carrito">
                 <span aria-hidden="true">🛒</span>
                 <span>Carrito</span>
+                <strong class="cart-count" th:if="${cantidadCarrito > 0}" th:text="${cantidadCarrito}">1</strong>
             </a>
             <a class="button button-small" th:href="@{/menu}">Pedir ahora</a>
         </div>
