@@ -16,8 +16,10 @@ Desplegar Experiencia Sumaq como una aplicación Spring Boot Java 21 y MySQL 8.4
 1. Instalar Docker Desktop y Docker Compose.
 2. Copiar `.env.example` como `.env`.
 3. Reemplazar todas las claves de ejemplo y revisar puertos.
-4. Para producción usar `SPRING_PROFILES_ACTIVE=prod`, secretos distintos y HTTPS en el proxy inverso.
+4. Para producción usar `SPRING_PROFILES_ACTIVE=prod`, una base separada, secretos distintos y HTTPS en el proxy inverso.
 5. Generar un backup antes de actualizar una instalación existente.
+
+Los perfiles `local` y `prod` no deben compartir el mismo esquema: `local` registra la migración V3 con usuarios demo, mientras `prod` la excluye deliberadamente. Puede sobrescribirse la URL interna de Compose mediante `APP_DB_URL`.
 
 ## Despliegue local demostrable
 
@@ -34,6 +36,8 @@ docker compose ps
 docker compose logs app --tail 100
 .\scripts\health-check.ps1
 ```
+
+Cuando la política local de PowerShell impida ejecutar archivos `.ps1`, usar `powershell -ExecutionPolicy Bypass -File .\scripts\start.ps1` (y el mismo prefijo para los demás scripts).
 
 ## Actualización
 

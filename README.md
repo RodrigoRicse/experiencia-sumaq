@@ -153,7 +153,9 @@ Comprobar salud y detener sin eliminar datos:
 .\scripts\stop.ps1
 ```
 
-Para producción establece `SPRING_PROFILES_ACTIVE=prod`, utiliza secretos propios y publica la aplicación detrás de HTTPS.
+Si Windows bloquea la ejecución de scripts, antepón `powershell -ExecutionPolicy Bypass -File`; por ejemplo: `powershell -ExecutionPolicy Bypass -File .\scripts\start.ps1`.
+
+Para producción establece `SPRING_PROFILES_ACTIVE=prod`, utiliza una base separada sin datos demo, define secretos propios y publica la aplicación detrás de HTTPS. `APP_DB_URL` permite sobrescribir la URL JDBC interna de Compose.
 
 ## Empaquetado
 

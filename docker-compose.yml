@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-local}
-      DB_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:?Define MYSQL_DATABASE en el archivo .env}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima
+      DB_URL: ${APP_DB_URL:-jdbc:mysql://mysql:3306/${MYSQL_DATABASE:?Define MYSQL_DATABASE en el archivo .env}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima}
       DB_USER: ${MYSQL_USER:?Define MYSQL_USER en el archivo .env}
       DB_PASSWORD: ${MYSQL_PASSWORD:?Define MYSQL_PASSWORD en el archivo .env}
       SERVER_PORT: 8080

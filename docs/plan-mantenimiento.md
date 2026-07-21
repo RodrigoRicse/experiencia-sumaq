@@ -10,6 +10,8 @@
 
 `stop.ps1` conserva los volúmenes. Los datos solo deben eliminarse mediante una operación explícita y previamente respaldada.
 
+Si la política local de PowerShell bloquea los scripts, ejecutarlos con `powershell -ExecutionPolicy Bypass -File <script>`.
+
 ## Backups
 
 Crear un backup consistente:
