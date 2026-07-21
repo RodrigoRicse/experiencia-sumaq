@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Mesa Sumaq</title>
+  <desc id="desc">Ilustración cálida de una mesa con platos peruanos e ingredientes andinos.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#173f31"/><stop offset="1" stop-color="#967448"/></linearGradient>
+    <radialGradient id="plate"><stop stop-color="#fffdf5"/><stop offset=".78" stop-color="#eee1ca"/><stop offset=".8" stop-color="#cbb899"/><stop offset="1" stop-color="#f7f0e1"/></radialGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="24" stdDeviation="22" flood-opacity=".28"/></filter>
+    <pattern id="grain" width="44" height="44" patternUnits="userSpaceOnUse"><circle cx="8" cy="9" r="1" fill="#fff" opacity=".09"/><circle cx="31" cy="29" r="1.5" fill="#111" opacity=".08"/></pattern>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#grain)"/>
+  <path d="M1080 0h520v900H830c130-156 190-325 171-510-11-112 16-242 79-390z" fill="#d9b778" opacity=".22"/>
+  <g filter="url(#shadow)">
+    <circle cx="1150" cy="420" r="275" fill="url(#plate)"/>
+    <circle cx="1150" cy="420" r="190" fill="#6b3f2d"/>
+    <path d="M1006 370c95-95 237-111 308 4-38 119-161 177-276 120-35-31-45-72-32-124z" fill="#c96f3e"/>
+    <path d="M1050 390c66-37 142-33 216 13-34 62-98 94-181 76-39-21-51-50-35-89z" fill="#e7c75b"/>
+    <g fill="#4d8b58"><ellipse cx="1090" cy="355" rx="55" ry="15" transform="rotate(-20 1090 355)"/><ellipse cx="1225" cy="485" rx="62" ry="17" transform="rotate(22 1225 485)"/></g>
+    <g fill="#cf4545"><circle cx="1038" cy="436" r="17"/><circle cx="1264" cy="396" r="13"/><circle cx="1160" cy="510" r="12"/></g>
+    <g fill="#f3ead7"><circle cx="1120" cy="386" r="8"/><circle cx="1190" cy="444" r="9"/><circle cx="1087" cy="475" r="7"/></g>
+  </g>
+  <g opacity=".9">
+    <path d="M1425 140c-68 17-106 69-108 154 78-21 114-72 108-154z" fill="#4c8459"/><path d="M1472 210c-74 10-115 56-124 138 81-12 121-58 124-138z" fill="#79a265"/>
+    <path d="M880 670c-72 13-111 61-116 144 79-16 117-64 116-144z" fill="#6a935e"/><path d="M920 726c-70 2-114 40-132 115 76-4 120-42 132-115z" fill="#b5c477"/>
+  </g>
+  <g fill="#f4d37c"><circle cx="1400" cy="680" r="20"/><circle cx="1452" cy="652" r="14"/><circle cx="1370" cy="628" r="11"/></g>
+</svg>

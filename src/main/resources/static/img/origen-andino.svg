@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-labelledby="title">
+  <title id="title">Paisaje agrícola andino</title>
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#b8d7cc"/><stop offset="1" stop-color="#f7e5b4"/></linearGradient><linearGradient id="soil"><stop stop-color="#6d4c35"/><stop offset="1" stop-color="#bd8b4e"/></linearGradient></defs>
+  <rect width="1000" height="700" fill="url(#sky)"/><circle cx="800" cy="125" r="62" fill="#f7ca62" opacity=".85"/>
+  <path d="M0 420L210 170l176 212L560 125l275 294 165-157v438H0z" fill="#355d4d"/><path d="M104 295l106-125 79 96-55-24-28 34-35-23zM469 227l91-102 93 100-60-28-35 34-39-34z" fill="#f7f3e7" opacity=".9"/>
+  <path d="M0 465c220-76 431-62 626 44 134 72 259 80 374 27v164H0z" fill="url(#soil)"/>
+  <g fill="none" stroke="#e6bd72" stroke-width="16" opacity=".72"><path d="M-50 545c248-108 459-80 635 84"/><path d="M-15 620c218-91 400-62 548 88"/><path d="M540 548c160 82 319 90 477 25"/></g>
+  <g fill="#315d43"><path d="M120 520c35-78 60-78 75 0-27-17-52-17-75 0z"/><path d="M265 500c35-82 61-82 78 0-28-18-54-18-78 0z"/><path d="M720 540c38-88 67-88 86 0-31-18-60-18-86 0z"/></g>
+</svg>

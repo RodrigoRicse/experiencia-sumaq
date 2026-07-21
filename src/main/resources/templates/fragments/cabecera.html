@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header class="site-header" th:fragment="cabecera(paginaActiva)">
+    <div class="nav-shell">
+        <a class="brand" th:href="@{/}" aria-label="Experiencia Sumaq, inicio">
+            <span class="brand-mark" aria-hidden="true">S</span>
+            <span>Experiencia <strong>Sumaq</strong></span>
+        </a>
+
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-navigation">
+            <span class="sr-only">Abrir navegación</span>
+            <span aria-hidden="true">☰</span>
+        </button>
+
+        <nav id="main-navigation" class="main-nav" aria-label="Navegación principal">
+            <a th:href="@{/}" th:classappend="${paginaActiva == 'inicio'} ? ' active'">Inicio</a>
+            <a th:href="@{/menu}" th:classappend="${paginaActiva == 'menu'} ? ' active'">Menú</a>
+            <a th:href="@{/#filosofia}">Nuestra filosofía</a>
+        </nav>
+
+        <div class="nav-actions">
+            <a class="cart-link" th:href="@{/carrito}" aria-label="Ver carrito">
+                <span aria-hidden="true">🛒</span>
+                <span>Carrito</span>
+            </a>
+            <a class="button button-small" th:href="@{/menu}">Pedir ahora</a>
+        </div>
+    </div>
+</header>
+
+<footer class="site-footer" th:fragment="pie">
+    <div class="footer-shell">
+        <div>
+            <a class="brand footer-brand" th:href="@{/}">
+                <span class="brand-mark" aria-hidden="true">S</span>
+                <span>Experiencia <strong>Sumaq</strong></span>
+            </a>
+            <p>Sabores peruanos que alimentan, conectan y celebran nuestra tierra.</p>
+        </div>
+        <nav aria-label="Enlaces del pie de página">
+            <a th:href="@{/menu}">Menú</a>
+            <a th:href="@{/#filosofia}">Filosofía</a>
+            <a th:href="@{/login}">Acceso del personal</a>
+        </nav>
+        <p class="copyright">© <span data-current-year>2026</span> Experiencia Sumaq</p>
+    </div>
+</footer>
+</body>
+</html>
