@@ -108,4 +108,31 @@ class PedidoServiceTest {
 
         assertThat(actualizado.getEstado().getCodigo()).isEqualTo("EN_PREPARACION");
     }
+
+    @Test
+    void cancelaPedidoCuandoElPagoSimuladoEsRechazado() {
+        EstadoPedido cancelado = new EstadoPedido("CANCELADO", "Cancelado", 50);
+        Producto producto = new Producto(
+                new Categoria("Bebidas", "Bebidas", 30),
+                "Chicha morada",
+                "Bebida de maíz morado",
+                new BigDecimal("12.00"),
+                "/img/productos/bebidas.svg");
+        RegistroPedidoDto solicitud = new RegistroPedidoDto(
+                new ClientePedidoDto("Rosa", "Flores", "999999999", null),
+                List.of(new ItemPedidoDto(2L, 1, null)),
+                null,
+                MetodoPago.TARJETA,
+                false);
+        when(estadoPedidoRepository.findByCodigo("CANCELADO")).thenReturn(Optional.of(cancelado));
+        when(clienteRepository.save(any(Cliente.class))).thenAnswer(invocacion -> invocacion.getArgument(0));
+        when(codigoRecojoService.generar()).thenReturn("SUMAQ-REJ123");
+        when(productoRepository.findById(2L)).thenReturn(Optional.of(producto));
+        when(pedidoRepository.save(any(Pedido.class))).thenAnswer(invocacion -> invocacion.getArgument(0));
+
+        PedidoRegistradoDto resultado = pedidoService.registrar(solicitud);
+
+        assertThat(resultado.estadoPedido()).isEqualTo("CANCELADO");
+        assertThat(resultado.estadoPago()).isEqualTo(EstadoPago.RECHAZADO);
+    }
 }

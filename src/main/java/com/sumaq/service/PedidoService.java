@@ -68,7 +68,8 @@ public class PedidoService {
 
     @Transactional
     public PedidoRegistradoDto registrar(RegistroPedidoDto solicitud) {
-        EstadoPedido estadoInicial = obtenerEstado(PENDIENTE);
+        boolean pagoAprobado = Boolean.TRUE.equals(solicitud.pagoAprobado());
+        EstadoPedido estadoInicial = obtenerEstado(pagoAprobado ? PENDIENTE : CANCELADO);
         Cliente cliente = clienteRepository.save(crearCliente(solicitud.cliente()));
         Pedido pedido = new Pedido(cliente, estadoInicial, codigoRecojoService.generar(), solicitud.observaciones());
 
@@ -83,7 +84,7 @@ public class PedidoService {
                 pedido,
                 solicitud.metodoPago(),
                 pedido.getTotal(),
-                Boolean.TRUE.equals(solicitud.pagoAprobado())
+                pagoAprobado
         );
         pedido.registrarPago(pago);
         Pedido guardado = pedidoRepository.save(pedido);
@@ -104,6 +105,17 @@ public class PedidoService {
     public Pedido buscarPorCodigoRecojo(String codigoRecojo) {
         return pedidoRepository.findByCodigoRecojo(codigoRecojo)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Pedido no encontrado: " + codigoRecojo));
+    }
+
+    @Transactional(readOnly = true)
+    public PedidoRegistradoDto buscarResumenPorCodigo(String codigoRecojo) {
+        Pedido pedido = buscarPorCodigoRecojo(codigoRecojo);
+        return new PedidoRegistradoDto(
+                pedido.getId(),
+                pedido.getCodigoRecojo(),
+                pedido.getTotal(),
+                pedido.getEstado().getCodigo(),
+                pedido.getPago().getEstado());
     }
 
     @Transactional(readOnly = true)
