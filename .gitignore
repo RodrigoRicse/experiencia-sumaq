@@ -19,6 +19,8 @@ logs/
 # IDE and operating system
 .idea/
 .vscode/
+.agents/
+.codex/
 *.iml
 .DS_Store
 Thumbs.db

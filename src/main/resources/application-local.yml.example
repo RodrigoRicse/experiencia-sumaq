@@ -1,0 +1,9 @@
+# Copia este archivo como application-local.yml solo si necesitas sobrescribir
+# las variables de entorno locales. No guardes credenciales reales en Git.
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/experiencia_sumaq?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima
+    username: experiencia_sumaq
+    password: cambia_esta_clave
+  thymeleaf:
+    cache: false
