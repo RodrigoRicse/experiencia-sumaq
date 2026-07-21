@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/RodrigoRicse/experiencia-sumaq/actions/workflows/ci.yml/badge.svg)](https://github.com/RodrigoRicse/experiencia-sumaq/actions/workflows/ci.yml)
 
-Versión actual: `0.6.0`.
+Versión actual: `0.9.0`.
 
 Aplicación web para gestionar el catálogo, los pedidos y la operación de cocina, caja y administración de Experiencia Sumaq.
 
@@ -32,13 +32,19 @@ Implementado:
 - Administración de productos con creación, edición y cambio de disponibilidad.
 - Reporte básico de pedidos, ingresos aprobados y ventas por categoría.
 - Actuator incorporado y preparado para `health`, `info` y `metrics`.
+- Dockerfile multietapa con Java 21 y usuario sin privilegios.
+- Docker Compose con aplicación, MySQL, healthchecks y volúmenes persistentes.
+- Logs rotados con Logback y configuración mediante variables de entorno.
+- Scripts PowerShell de operación, salud, backup y restauración.
+- Planes de despliegue, monitoreo, mantenimiento, pruebas y seguridad.
+- Dependabot para Maven, Docker y GitHub Actions.
 - Pruebas del dominio, servicios, controladores y autorización por roles.
 
 Pendiente:
 
-- Dockerfile de la aplicación y healthcheck del servicio web.
-- Scripts de operación, backup y restauración.
-- Documentación formal de despliegue, monitoreo, mantenimiento y seguridad.
+- Automatización de pruebas end-to-end en navegador y pruebas de carga.
+- Proxy HTTPS, gestor externo de secretos y monitoreo centralizado para producción.
+- Escaneo automático de vulnerabilidades de la imagen de contenedor.
 
 ## Requisitos
 
@@ -125,13 +131,37 @@ Para detener MySQL sin eliminar sus datos:
 docker compose stop mysql
 ```
 
+## Ejecución con Docker
+
+Configura `.env` y levanta la aplicación completa:
+
+```powershell
+.\scripts\start.ps1
+```
+
+El comando construye la imagen Java 21, inicia MySQL y espera el healthcheck. Alternativamente:
+
+```powershell
+docker compose up -d --build
+docker compose ps
+```
+
+Comprobar salud y detener sin eliminar datos:
+
+```powershell
+.\scripts\health-check.ps1
+.\scripts\stop.ps1
+```
+
+Para producción establece `SPRING_PROFILES_ACTIVE=prod`, utiliza secretos propios y publica la aplicación detrás de HTTPS.
+
 ## Empaquetado
 
 ```powershell
 .\mvnw.cmd clean package
 ```
 
-El JAR ejecutable se genera en `target/experiencia-sumaq-0.6.0.jar`.
+El JAR ejecutable se genera en `target/experiencia-sumaq-0.9.0.jar`.
 
 ## Base de datos y Flyway
 
@@ -193,6 +223,7 @@ La suite actual comprueba:
 - Creación y validación de productos administrativos.
 - Cálculo del reporte de ventas aprobadas.
 - Controlador administrativo y restricción del rol `ADMINISTRADOR`.
+- Acceso público a `health` y protección administrativa de `info` y `metrics`.
 - Arranque del contexto, migraciones Flyway y validación JPA con el perfil `test`.
 
 Ejecución:
@@ -211,6 +242,8 @@ Actuator está configurado para exponer:
 
 `health` es público; `info` y `metrics` están restringidos al rol `ADMINISTRADOR`.
 
+Los logs se escriben en consola y en el volumen Docker `app_logs`. La rotación conserva 14 días, limita cada archivo a 10 MB y el conjunto a 500 MB. Consulta [docs/plan-monitoreo.md](docs/plan-monitoreo.md).
+
 ## Arquitectura
 
 - `controller`: controladores MVC y formularios.
@@ -228,4 +261,16 @@ Actuator está configurado para exponer:
 
 ## Backup y restauración
 
-Los procedimientos y scripts `backup-db.ps1` y `restore-db.ps1` están planificados para la etapa de mantenimiento. El volumen `mysql_data` conserva los datos cuando el contenedor se detiene o recrea.
+Crear una copia consistente:
+
+```powershell
+.\scripts\backup-db.ps1
+```
+
+Restaurar una copia ubicada en `database/backups/`:
+
+```powershell
+.\scripts\restore-db.ps1 -BackupFile .\database\backups\experiencia_sumaq-AAAAMMDD-HHMMSS.sql
+```
+
+La restauración exige confirmación explícita. Consulta [docs/plan-mantenimiento.md](docs/plan-mantenimiento.md) antes de usarla.
