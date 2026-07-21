@@ -1,16 +1,25 @@
 # Maven
 /target/
 *.class
+hs_err_pid*
+replay_pid*
 
 # Node and preserved prototype local state
 node_modules/
 *.local
+.npm/
+.pnpm-store/
 
 # Environment and local configuration
 .env
 .env.*
 !.env.example
 application-local.yml
+
+# Docker local overrides
+/.docker/
+docker-compose.override.yml
+docker-compose.*.override.yml
 
 # Runtime files
 logs/
@@ -19,6 +28,9 @@ logs/
 # IDE and operating system
 .idea/
 .vscode/
+.classpath
+.project
+.settings/
 .agents/
 .codex/
 *.iml
@@ -28,3 +40,8 @@ Thumbs.db
 # Temporary scaffold files
 /.scaffold-tmp/
 /*.zip
+
+# Database backups and local exports
+/database/backups/
+*.sql.gz
+*.dump
