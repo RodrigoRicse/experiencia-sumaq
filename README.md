@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/RodrigoRicse/experiencia-sumaq/actions/workflows/ci.yml/badge.svg)](https://github.com/RodrigoRicse/experiencia-sumaq/actions/workflows/ci.yml)
 
-Versión actual: `0.5.0`.
+Versión actual: `0.6.0`.
 
 Aplicación web para gestionar el catálogo, los pedidos y la operación de cocina, caja y administración de Experiencia Sumaq.
 
@@ -18,7 +18,7 @@ Implementado:
 - Maven Wrapper 3.9.16.
 - Arquitectura por capas en `com.sumaq`.
 - MySQL 8.4 mediante Docker Compose, volumen persistente y healthcheck.
-- Flyway con migraciones V1, V2 y V3.
+- Flyway con migraciones versionadas V1, V2, V3 y V4.
 - Entidades, relaciones, restricciones y repositorios JPA.
 - Servicios para productos, registro de pedidos, códigos de recojo y cambios de estado.
 - Pago simulado aprobado o rechazado.
@@ -29,12 +29,13 @@ Implementado:
 - Acceso personalizado para el personal con autorización por roles.
 - Panel de cocina con pedidos pendientes, en preparación y listos.
 - Búsqueda y entrega de pedidos desde caja mediante código de recojo.
+- Administración de productos con creación, edición y cambio de disponibilidad.
+- Reporte básico de pedidos, ingresos aprobados y ventas por categoría.
 - Actuator incorporado y preparado para `health`, `info` y `metrics`.
 - Pruebas del dominio, servicios, controladores y autorización por roles.
 
 Pendiente:
 
-- Panel de administración de productos y reporte básico.
 - Dockerfile de la aplicación y healthcheck del servicio web.
 - Scripts de operación, backup y restauración.
 - Documentación formal de despliegue, monitoreo, mantenimiento y seguridad.
@@ -116,6 +117,7 @@ Rutas del personal:
 - `/login`: acceso del personal.
 - `/cocina`: gestión de preparación para `COCINA` y `ADMINISTRADOR`.
 - `/caja`: búsqueda y entrega para `CAJA` y `ADMINISTRADOR`.
+- `/admin`: productos y reporte básico para `ADMINISTRADOR`.
 
 Para detener MySQL sin eliminar sus datos:
 
@@ -129,7 +131,7 @@ docker compose stop mysql
 .\mvnw.cmd clean package
 ```
 
-El JAR ejecutable se genera en `target/experiencia-sumaq-0.5.0.jar`.
+El JAR ejecutable se genera en `target/experiencia-sumaq-0.6.0.jar`.
 
 ## Base de datos y Flyway
 
@@ -138,6 +140,7 @@ Base: `experiencia_sumaq`.
 - `V1__crear_tablas.sql`: tablas, claves, restricciones e índices.
 - `V2__insertar_catalogos.sql`: roles, estados y categorías.
 - `V3__insertar_datos_demo.sql`: usuarios y productos solo para el perfil local.
+- `V4__actualizar_catalogo_visual.sql`: textos e imágenes locales del catálogo.
 
 Hibernate usa `ddl-auto=validate`; Flyway es la autoridad del esquema.
 
@@ -187,6 +190,9 @@ La suite actual comprueba:
 - Consulta operativa de pedidos para cocina y caja.
 - Controladores de cocina y caja con protección CSRF.
 - Restricciones de acceso entre los roles `COCINA` y `CAJA`.
+- Creación y validación de productos administrativos.
+- Cálculo del reporte de ventas aprobadas.
+- Controlador administrativo y restricción del rol `ADMINISTRADOR`.
 - Arranque del contexto, migraciones Flyway y validación JPA con el perfil `test`.
 
 Ejecución:
@@ -203,7 +209,7 @@ Actuator está configurado para exponer:
 - `/actuator/info`
 - `/actuator/metrics`
 
-La política definitiva de acceso se incorporará con la configuración de seguridad: `health` será público y `info`/`metrics` estarán restringidos a administración.
+`health` es público; `info` y `metrics` están restringidos al rol `ADMINISTRADOR`.
 
 ## Arquitectura
 
