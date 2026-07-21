@@ -62,11 +62,14 @@
                         </div>
                         <div class="product-action">
                             <strong th:text="|S/ ${#numbers.formatDecimal(producto.precio(), 1, 2)}|">S/ 0.00</strong>
-                            <button type="button" class="add-button js-cart-preview"
-                                    th:attr="data-product=${producto.nombre()}"
-                                    th:aria-label="|Agregar ${producto.nombre()} al carrito|">
-                                <span aria-hidden="true">＋</span>
-                            </button>
+                            <form th:action="@{/carrito/items}" method="post">
+                                <input type="hidden" name="productoId" th:value="${producto.id()}">
+                                <input type="hidden" name="categoria" th:value="${catalogo.categoriaSeleccionada().id()}">
+                                <button type="submit" class="add-button"
+                                        th:aria-label="|Agregar ${producto.nombre()} al carrito|">
+                                    <span aria-hidden="true">＋</span>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </article>
@@ -82,19 +85,48 @@
         <aside class="cart-preview" aria-labelledby="cart-title">
             <div>
                 <p class="eyebrow">Tu selección</p>
-                <h2 id="cart-title">Carrito</h2>
+                <h2 id="cart-title">Carrito <small th:if="${!carrito.estaVacio()}" th:text="|(${carrito.cantidadTotal()})|">(1)</small></h2>
             </div>
-            <div class="cart-preview-empty">
+            <div class="cart-preview-empty" th:if="${carrito.estaVacio()}">
                 <span aria-hidden="true">🛒</span>
                 <p>Aún no agregaste productos.</p>
-                <small>El carrito persistente se habilita en el siguiente incremento de esta etapa.</small>
+                <small>Agrega productos del menú para continuar.</small>
             </div>
-            <button class="button" type="button" disabled>Continuar pedido</button>
+            <div class="cart-items" th:if="${!carrito.estaVacio()}">
+                <article class="cart-item" th:each="item : ${carrito.items()}">
+                    <img th:src="@{${item.rutaImagen()}}" th:alt="|Miniatura de ${item.nombre()}|">
+                    <div>
+                        <h3 th:text="${item.nombre()}">Producto</h3>
+                        <strong th:text="|S/ ${#numbers.formatDecimal(item.subtotal(), 1, 2)}|">S/ 0.00</strong>
+                        <div class="quantity-actions">
+                            <form th:action="@{/carrito/items/{id}/cantidad(id=${item.productoId()})}" method="post">
+                                <input type="hidden" name="cantidad" th:value="${item.cantidad() - 1}">
+                                <button type="submit" th:aria-label="|Reducir cantidad de ${item.nombre()}|">−</button>
+                            </form>
+                            <span th:text="${item.cantidad()}">1</span>
+                            <form th:action="@{/carrito/items/{id}/cantidad(id=${item.productoId()})}" method="post">
+                                <input type="hidden" name="cantidad" th:value="${item.cantidad() + 1}">
+                                <button type="submit" th:disabled="${item.cantidad() >= 20}"
+                                        th:aria-label="|Aumentar cantidad de ${item.nombre()}|">＋</button>
+                            </form>
+                            <form class="remove-item" th:action="@{/carrito/items/{id}/eliminar(id=${item.productoId()})}" method="post">
+                                <button type="submit" th:aria-label="|Eliminar ${item.nombre()}|">Eliminar</button>
+                            </form>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <div class="cart-total" th:if="${!carrito.estaVacio()}">
+                <span>Total</span>
+                <strong th:text="|S/ ${#numbers.formatDecimal(carrito.total(), 1, 2)}|">S/ 0.00</strong>
+            </div>
+            <a class="button" th:if="${!carrito.estaVacio()}" th:href="@{/pedido/checkout}">Continuar pedido</a>
         </aside>
     </div>
 </main>
 
-<div class="toast" role="status" aria-live="polite" hidden></div>
+<div class="toast" role="status" aria-live="polite" th:if="${mensaje}" th:text="${mensaje}"></div>
+<div class="toast toast-error" role="alert" th:if="${error}" th:text="${error}"></div>
 <footer th:replace="~{fragments/cabecera :: pie}"></footer>
 </body>
 </html>

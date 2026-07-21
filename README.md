@@ -16,16 +16,17 @@ Implementado:
 - Entidades, relaciones, restricciones y repositorios JPA.
 - Servicios para productos, registro de pedidos, códigos de recojo y cambios de estado.
 - Pago simulado aprobado o rechazado.
+- Inicio y catálogo responsive migrados a Thymeleaf con imágenes locales.
+- Carrito persistente por sesión con modificación de cantidades y validación de disponibilidad.
+- Checkout público con validaciones, pago simulado, código de recojo y confirmación.
+- Autenticación del personal basada en usuarios MySQL y contraseñas BCrypt.
 - Actuator incorporado y preparado para `health`, `info` y `metrics`.
 - Pruebas iniciales del dominio y validación del contexto.
 
 Pendiente:
 
-- Controladores y vistas Thymeleaf.
-- Carrito web y flujo completo del cliente.
 - Paneles de cocina, caja y administración.
-- Recursos visuales locales.
-- Configuración definitiva de Spring Security por roles.
+- Página de acceso personalizada para el personal.
 - Dockerfile de la aplicación y healthcheck del servicio web.
 - Scripts de operación, backup y restauración.
 - Documentación formal de despliegue, monitoreo, mantenimiento y seguridad.
@@ -93,7 +94,14 @@ docker compose ps
 .\mvnw.cmd spring-boot:run
 ```
 
-La aplicación usará `http://localhost:8080`. Las pantallas web se incorporarán en la siguiente etapa.
+La aplicación usará `http://localhost:8080`.
+
+Rutas públicas principales:
+
+- `/`: inicio.
+- `/menu`: catálogo por categorías.
+- `/pedido/checkout`: datos del cliente y pago simulado.
+- `/pedido/confirmacion/{codigo}`: resultado y código de recojo.
 
 Para detener MySQL sin eliminar sus datos:
 

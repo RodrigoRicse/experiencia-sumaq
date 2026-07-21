@@ -2,6 +2,8 @@ package com.sumaq.controller;
 
 import com.sumaq.dto.CatalogoDto;
 import com.sumaq.dto.CategoriaCatalogoDto;
+import com.sumaq.dto.CarritoDto;
+import com.sumaq.service.CarritoService;
 import com.sumaq.service.CatalogoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
+import java.math.BigDecimal;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -20,12 +23,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ClienteControllerTest {
 
     private CatalogoService catalogoService;
+    private CarritoService carritoService;
     private MockMvc mockMvc;
 
     @BeforeEach
     void configurar() {
         catalogoService = mock(CatalogoService.class);
-        mockMvc = MockMvcBuilders.standaloneSetup(new ClienteController(catalogoService)).build();
+        carritoService = mock(CarritoService.class);
+        mockMvc = MockMvcBuilders.standaloneSetup(new ClienteController(catalogoService, carritoService)).build();
     }
 
     @Test
@@ -41,6 +46,7 @@ class ClienteControllerTest {
         CategoriaCatalogoDto categoria = new CategoriaCatalogoDto(1L, "Entradas");
         CatalogoDto catalogo = new CatalogoDto(List.of(categoria), categoria, List.of());
         when(catalogoService.obtenerCatalogo(1L)).thenReturn(catalogo);
+        when(carritoService.obtener()).thenReturn(new CarritoDto(List.of(), 0, BigDecimal.ZERO.setScale(2)));
 
         mockMvc.perform(get("/menu").param("categoria", "1"))
                 .andExpect(status().isOk())

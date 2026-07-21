@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title>Resultado del pedido | Experiencia Sumaq</title>
+    <link rel="stylesheet" th:href="@{/css/sumaq.css}">
+    <script th:src="@{/js/sumaq.js}" defer></script>
+</head>
+<body class="confirmation-page">
+<header th:replace="~{fragments/cabecera :: cabecera(${paginaActiva})}"></header>
+
+<main class="confirmation-shell">
+    <section class="confirmation-card" th:classappend="${pedido.estadoPago().name() == 'RECHAZADO'} ? ' rejected'">
+        <div class="result-icon" aria-hidden="true" th:text="${pedido.estadoPago().name() == 'APROBADO'} ? '✓' : '!'">✓</div>
+        <p class="eyebrow" th:text="${pedido.estadoPago().name() == 'APROBADO'} ? 'Pedido confirmado' : 'Pago rechazado'">Pedido confirmado</p>
+        <h1 th:text="${pedido.estadoPago().name() == 'APROBADO'} ? '¡Gracias por tu pedido!' : 'No se completó el pago'">¡Gracias!</h1>
+        <p th:if="${pedido.estadoPago().name() == 'APROBADO'}">Presenta este código en caja cuando tu pedido se encuentre listo.</p>
+        <p th:if="${pedido.estadoPago().name() == 'RECHAZADO'}">La simulación fue rechazada y el pedido quedó cancelado. Puedes volver al carrito e intentarlo nuevamente.</p>
+
+        <div class="pickup-code">
+            <span>Código de recojo</span>
+            <strong th:text="${pedido.codigoRecojo()}">SUMAQ-ABC123</strong>
+        </div>
+        <dl class="confirmation-data">
+            <div><dt>Total</dt><dd th:text="|S/ ${#numbers.formatDecimal(pedido.total(), 1, 2)}|">S/ 0.00</dd></div>
+            <div><dt>Estado del pedido</dt><dd th:text="${pedido.estadoPedido()}">PENDIENTE</dd></div>
+            <div><dt>Estado del pago</dt><dd th:text="${pedido.estadoPago()}">APROBADO</dd></div>
+        </dl>
+        <div class="button-row confirmation-actions">
+            <a class="button" th:href="@{/menu}" th:text="${pedido.estadoPago().name() == 'APROBADO'} ? 'Realizar otro pedido' : 'Volver al carrito'">Volver al menú</a>
+            <a class="button button-outline" th:href="@{/}">Ir al inicio</a>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="~{fragments/cabecera :: pie}"></footer>
+</body>
+</html>
