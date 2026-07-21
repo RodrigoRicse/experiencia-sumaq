@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title>Administración | Experiencia Sumaq</title>
+    <link rel="stylesheet" th:href="@{/css/sumaq.css}">
+    <script th:src="@{/js/operacion.js}" defer></script>
+</head>
+<body class="ops-page admin-page">
+<header th:replace="~{fragments/operacion :: cabecera(${seccionActiva})}"></header>
+<main class="ops-shell admin-shell">
+    <header class="ops-heading">
+        <div><p class="eyebrow">Vista general</p><h1>Administración</h1><p>Consulta ventas aprobadas y gestiona el catálogo publicado.</p></div>
+        <a class="button button-small" th:href="@{/admin/productos/nuevo}">+ Nuevo producto</a>
+    </header>
+    <div class="toast" role="status" th:if="${mensaje}" th:text="${mensaje}"></div>
+
+    <section class="admin-metrics" aria-label="Resumen de ventas">
+        <article><span aria-hidden="true">S/</span><p>Ingresos aprobados</p><strong th:text="|S/ ${#numbers.formatDecimal(reporte.ingresosAprobados(), 1, 2)}|">S/ 0.00</strong></article>
+        <article><span aria-hidden="true">#</span><p>Pedidos aprobados</p><strong th:text="${reporte.pedidosAprobados()}">0</strong><small th:text="|de ${reporte.pedidosTotales()} registrados|">de 0 registrados</small></article>
+        <article><span aria-hidden="true">Ø</span><p>Ticket promedio</p><strong th:text="|S/ ${#numbers.formatDecimal(reporte.ticketPromedio(), 1, 2)}|">S/ 0.00</strong></article>
+        <article><span aria-hidden="true">✓</span><p>Catálogo disponible</p><strong th:text="${reporte.productosDisponibles()}">0</strong><small th:text="|${reporte.productosNoDisponibles()} no disponibles|">0 no disponibles</small></article>
+    </section>
+
+    <section class="admin-report-card" aria-labelledby="ventas-categoria">
+        <header><div><p class="eyebrow">Reporte básico</p><h2 id="ventas-categoria">Ventas por categoría</h2></div><small>Solo pagos aprobados</small></header>
+        <div class="admin-report-table" th:if="${!reporte.ventasPorCategoria().isEmpty()}">
+            <table><thead><tr><th>Categoría</th><th>Unidades</th><th>Ingresos</th></tr></thead>
+                <tbody><tr th:each="venta : ${reporte.ventasPorCategoria()}"><td th:text="${venta.categoria()}">Fondos</td><td th:text="${venta.unidades()}">0</td><td th:text="|S/ ${#numbers.formatDecimal(venta.ingresos(), 1, 2)}|">S/ 0.00</td></tr></tbody>
+            </table>
+        </div>
+        <div class="admin-report-empty" th:if="${reporte.ventasPorCategoria().isEmpty()}">Aún no existen ventas aprobadas para mostrar.</div>
+    </section>
+
+    <section class="admin-products" aria-labelledby="productos-titulo">
+        <header><div><p class="eyebrow">Catálogo</p><h2 id="productos-titulo">Gestión de productos</h2></div><label class="admin-search">Buscar producto<input type="search" placeholder="Nombre o categoría" data-product-search></label></header>
+        <div class="admin-product-table">
+            <table><thead><tr><th>Producto</th><th>Precio</th><th>Estado</th><th><span class="sr-only">Acciones</span></th></tr></thead>
+                <tbody><tr th:each="producto : ${productos}" data-product-row th:attr="data-search=|${producto.nombre()} ${producto.categoria()}|">
+                    <td><div class="admin-product-name"><img th:src="@{${producto.rutaImagen()}}" th:alt="|Imagen de ${producto.nombre()}|"><span><strong th:text="${producto.nombre()}">Producto</strong><small th:text="${producto.categoria()}">Categoría</small></span></div></td>
+                    <td th:text="|S/ ${#numbers.formatDecimal(producto.precio(), 1, 2)}|">S/ 0.00</td>
+                    <td><span class="availability" th:classappend="${!producto.disponible()} ? ' unavailable'" th:text="${producto.disponible()} ? 'Disponible' : 'No disponible'">Disponible</span></td>
+                    <td><div class="admin-row-actions"><a th:href="@{/admin/productos/{id}/editar(id=${producto.id()})}">Editar</a><form th:action="@{/admin/productos/{id}/disponibilidad(id=${producto.id()})}" method="post"><input type="hidden" name="disponible" th:value="${!producto.disponible()}"><button type="submit" th:text="${producto.disponible()} ? 'Ocultar' : 'Habilitar'">Ocultar</button></form></div></td>
+                </tr></tbody>
+            </table>
+            <p class="admin-no-results" data-product-empty hidden>No hay productos que coincidan con la búsqueda.</p>
+        </div>
+    </section>
+</main>
+</body>
+</html>

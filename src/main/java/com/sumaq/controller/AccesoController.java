@@ -20,8 +20,12 @@ public class AccesoController {
 
     @GetMapping("/personal")
     public String portal(Authentication authentication) {
+        boolean administrador = tieneRol(authentication, "ROLE_ADMINISTRADOR");
         boolean cocina = tieneRol(authentication, "ROLE_COCINA");
         boolean caja = tieneRol(authentication, "ROLE_CAJA");
+        if (administrador) {
+            return "redirect:/admin";
+        }
         if (cocina) {
             return "redirect:/cocina";
         }

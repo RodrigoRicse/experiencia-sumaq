@@ -17,4 +17,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.querySelectorAll('.toast').forEach((toast) => window.setTimeout(() => toast.remove(), 3200));
+
+    const productSearch = document.querySelector('[data-product-search]');
+    if (productSearch) {
+        const rows = [...document.querySelectorAll('[data-product-row]')];
+        const empty = document.querySelector('[data-product-empty]');
+        productSearch.addEventListener('input', () => {
+            const query = productSearch.value.trim().toLocaleLowerCase('es');
+            let visible = 0;
+            rows.forEach((row) => {
+                const matches = row.dataset.search.toLocaleLowerCase('es').includes(query);
+                row.hidden = !matches;
+                visible += matches ? 1 : 0;
+            });
+            if (empty) empty.hidden = visible !== 0;
+        });
+    }
 });
