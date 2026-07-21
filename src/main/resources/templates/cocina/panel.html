@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title>Cocina | Experiencia Sumaq</title>
+    <link rel="stylesheet" th:href="@{/css/sumaq.css}">
+    <script th:src="@{/js/operacion.js}" defer></script>
+</head>
+<body class="ops-page kitchen-page">
+<header th:replace="~{fragments/operacion :: cabecera(${seccionActiva})}"></header>
+
+<main class="ops-shell">
+    <header class="ops-heading">
+        <div><p class="eyebrow">Monitor en vivo</p><h1>Estación de cocina</h1><p>Prioriza pedidos y actualiza su preparación en tiempo real.</p></div>
+        <div class="ops-heading-actions"><span class="live-indicator"><i></i> Operación activa</span><time data-live-clock>--:--</time><button type="button" class="refresh-button" onclick="window.location.reload()">Actualizar</button></div>
+    </header>
+
+    <div class="toast" role="status" th:if="${mensaje}" th:text="${mensaje}"></div>
+    <section class="kitchen-board" aria-label="Pedidos por estado">
+        <div class="kitchen-column pending">
+            <header><div><i></i><h2>Pendientes</h2></div><strong th:text="${pendientes.size()}">0</strong></header>
+            <div class="ticket-list">
+                <article class="kitchen-ticket" th:each="pedido : ${pendientes}">
+                    <div class="ticket-head"><div><strong th:text="${pedido.codigoRecojo()}">SUMAQ-ABC123</strong><small th:text="|Pedido #${pedido.id()}|">Pedido</small></div><span th:text="|${pedido.minutosEspera()} min|">0 min</span></div>
+                    <ul><li th:each="detalle : ${pedido.detalles()}"><b th:text="|${detalle.cantidad()}×|">1×</b><div><strong th:text="${detalle.producto()}">Producto</strong><p th:if="${detalle.observaciones() != null and !detalle.observaciones().isBlank()}" th:text="${detalle.observaciones()}"></p></div></li></ul>
+                    <p class="order-note" th:if="${pedido.observaciones() != null and !pedido.observaciones().isBlank()}" th:text="|Nota: ${pedido.observaciones()}|"></p>
+                    <form th:action="@{/cocina/pedidos/{id}/iniciar(id=${pedido.id()})}" method="post"><button class="ticket-action" type="submit">Iniciar preparación</button></form>
+                </article>
+                <div class="column-empty" th:if="${pendientes.isEmpty()}"><span>✓</span><p>No hay pedidos pendientes.</p></div>
+            </div>
+        </div>
+
+        <div class="kitchen-column preparing">
+            <header><div><i></i><h2>En preparación</h2></div><strong th:text="${enPreparacion.size()}">0</strong></header>
+            <div class="ticket-list">
+                <article class="kitchen-ticket" th:each="pedido : ${enPreparacion}">
+                    <div class="ticket-head"><div><strong th:text="${pedido.codigoRecojo()}">SUMAQ-ABC123</strong><small th:text="|Pedido #${pedido.id()}|">Pedido</small></div><span th:text="|${pedido.minutosEspera()} min|">0 min</span></div>
+                    <ul><li th:each="detalle : ${pedido.detalles()}"><b th:text="|${detalle.cantidad()}×|">1×</b><div><strong th:text="${detalle.producto()}">Producto</strong><p th:if="${detalle.observaciones() != null and !detalle.observaciones().isBlank()}" th:text="${detalle.observaciones()}"></p></div></li></ul>
+                    <p class="order-note" th:if="${pedido.observaciones() != null and !pedido.observaciones().isBlank()}" th:text="|Nota: ${pedido.observaciones()}|"></p>
+                    <form th:action="@{/cocina/pedidos/{id}/listo(id=${pedido.id()})}" method="post"><button class="ticket-action outline" type="submit">Marcar como listo</button></form>
+                </article>
+                <div class="column-empty" th:if="${enPreparacion.isEmpty()}"><span>◇</span><p>Nada en preparación.</p></div>
+            </div>
+        </div>
+
+        <div class="kitchen-column ready">
+            <header><div><i></i><h2>Listos para recojo</h2></div><strong th:text="${listos.size()}">0</strong></header>
+            <div class="ticket-list">
+                <article class="kitchen-ticket ready-ticket" th:each="pedido : ${listos}">
+                    <div class="ticket-head"><div><strong th:text="${pedido.codigoRecojo()}">SUMAQ-ABC123</strong><small>Esperando en caja</small></div><span aria-label="Listo">✓</span></div>
+                    <ul><li th:each="detalle : ${pedido.detalles()}"><b th:text="|${detalle.cantidad()}×|">1×</b><div><strong th:text="${detalle.producto()}">Producto</strong></div></li></ul>
+                </article>
+                <div class="column-empty" th:if="${listos.isEmpty()}"><span>○</span><p>Aún no hay pedidos listos.</p></div>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

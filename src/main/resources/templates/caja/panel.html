@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title>Caja y entregas | Experiencia Sumaq</title>
+    <link rel="stylesheet" th:href="@{/css/sumaq.css}">
+    <script th:src="@{/js/operacion.js}" defer></script>
+</head>
+<body class="ops-page cashier-page">
+<header th:replace="~{fragments/operacion :: cabecera(${seccionActiva})}"></header>
+
+<main class="ops-shell cashier-shell">
+    <header class="ops-heading"><div><p class="eyebrow">Punto de entrega</p><h1>Caja y recojo</h1><p>Busca el código del cliente, verifica pago y estado, y confirma la entrega.</p></div><time data-live-clock>--:--</time></header>
+
+    <div class="toast" role="status" th:if="${mensaje}" th:text="${mensaje}"></div>
+    <section class="pickup-search" aria-labelledby="search-title">
+        <div><span aria-hidden="true">⌕</span><div><h2 id="search-title">Buscar pedido</h2><p>Ingresa el código completo mostrado al cliente.</p></div></div>
+        <form th:action="@{/caja}" method="get"><label class="sr-only" for="pickup-code-search">Código de recojo</label><input id="pickup-code-search" name="codigo" th:value="${codigoBuscado}" placeholder="SUMAQ-ABC123" maxlength="20" autocomplete="off" required><button class="button" type="submit">Buscar</button></form>
+    </section>
+
+    <div class="cashier-error" th:if="${error}" role="alert"><strong>No encontrado</strong><p th:text="${error}">No existe el pedido.</p></div>
+
+    <section class="pickup-result" th:if="${pedido}" aria-labelledby="order-title">
+        <header><div><p class="eyebrow">Resultado</p><h2 id="order-title" th:text="${pedido.codigoRecojo()}">SUMAQ-ABC123</h2><p th:text="|Registrado ${#temporals.format(pedido.creadoEn(), 'dd/MM/yyyy HH:mm')}|">Registrado</p></div><span class="order-state" th:classappend="| state-${#strings.toLowerCase(pedido.estadoPedido())}|" th:text="${pedido.estadoPedido()}">LISTO</span></header>
+        <div class="pickup-grid">
+            <div class="customer-card"><h3>Cliente</h3><strong th:text="${pedido.cliente()}">Cliente</strong><p th:text="${pedido.telefono()}">999999999</p></div>
+            <div class="payment-card"><h3>Pago</h3><strong th:text="|${pedido.metodoPago()} · ${pedido.estadoPago()}|">YAPE · APROBADO</strong><p th:text="|S/ ${#numbers.formatDecimal(pedido.total(), 1, 2)}|">S/ 0.00</p></div>
+        </div>
+        <div class="pickup-items"><h3>Detalle del pedido</h3><ul><li th:each="detalle : ${pedido.detalles()}"><span><b th:text="|${detalle.cantidad()}×|">1×</b> <span th:text="${detalle.producto()}">Producto</span></span><small th:if="${detalle.observaciones() != null and !detalle.observaciones().isBlank()}" th:text="${detalle.observaciones()}"></small></li></ul></div>
+        <div class="delivery-status" th:if="${pedido.puedeEntregarse()}"><div><span aria-hidden="true">✓</span><p><strong>Pedido habilitado para entrega</strong><small>El pago está aprobado y cocina lo marcó como listo.</small></p></div><form th:action="@{/caja/pedidos/{id}/entregar(id=${pedido.id()})}" method="post"><input type="hidden" name="codigoRecojo" th:value="${pedido.codigoRecojo()}"><button class="button" type="submit">Confirmar entrega</button></form></div>
+        <div class="delivery-status warning" th:if="${!pedido.puedeEntregarse() and pedido.estadoPedido() != 'ENTREGADO'}"><span aria-hidden="true">!</span><p><strong>Aún no se puede entregar</strong><small th:text="|Estado: ${pedido.estadoPedido()} · Pago: ${pedido.estadoPago()}|">Estado</small></p></div>
+        <div class="delivery-status delivered" th:if="${pedido.estadoPedido() == 'ENTREGADO'}"><span aria-hidden="true">✓</span><p><strong>Pedido entregado</strong><small>La entrega ya fue confirmada.</small></p></div>
+    </section>
+
+    <section class="cashier-empty" th:if="${pedido == null and error == null}"><span aria-hidden="true">▦</span><h2>Listo para buscar</h2><p>El detalle del pedido aparecerá aquí.</p></section>
+</main>
+</body>
+</html>

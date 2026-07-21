@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<header class="ops-header" th:fragment="cabecera(seccionActiva)">
+    <div class="ops-header-shell">
+        <a class="brand" th:href="@{/personal}" aria-label="Portal interno Experiencia Sumaq">
+            <span class="brand-mark" aria-hidden="true">S</span>
+            <span>Sumaq <strong>Operaciones</strong></span>
+        </a>
+        <button class="ops-menu-toggle" type="button" aria-expanded="false" aria-controls="ops-navigation">☰<span class="sr-only">Abrir menú</span></button>
+        <nav id="ops-navigation" class="ops-nav" aria-label="Áreas operativas">
+            <a sec:authorize="hasAnyRole('COCINA','ADMINISTRADOR')" th:href="@{/cocina}"
+               th:classappend="${seccionActiva == 'cocina'} ? ' active'">Cocina</a>
+            <a sec:authorize="hasAnyRole('CAJA','ADMINISTRADOR')" th:href="@{/caja}"
+               th:classappend="${seccionActiva == 'caja'} ? ' active'">Caja</a>
+            <a sec:authorize="hasRole('ADMINISTRADOR')" th:href="@{/admin}">Administración</a>
+        </nav>
+        <div class="ops-user">
+            <span><small>Sesión</small><strong sec:authentication="name">usuario</strong></span>
+            <form th:action="@{/logout}" method="post"><button type="submit">Cerrar sesión</button></form>
+        </div>
+    </div>
+</header>
+</body>
+</html>
