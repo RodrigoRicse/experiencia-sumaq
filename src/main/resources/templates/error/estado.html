@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title>Error | Experiencia Sumaq</title>
+    <link rel="stylesheet" th:href="@{/css/sumaq.css}">
+</head>
+<body class="confirmation-page">
+<main class="confirmation-shell">
+    <section class="confirmation-card rejected">
+        <div class="result-icon" aria-hidden="true">!</div>
+        <p class="eyebrow">Experiencia Sumaq</p>
+        <h1 th:text="${titulo}">No pudimos completar la operación</h1>
+        <p th:text="${mensaje}">Inténtalo nuevamente.</p>
+        <div class="button-row confirmation-actions">
+            <a class="button" th:href="@{/menu}">Volver al menú</a>
+            <a class="button button-outline" th:href="@{/}">Ir al inicio</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>
