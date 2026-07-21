@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title th:text="${esEdicion} ? 'Editar producto | Experiencia Sumaq' : 'Nuevo producto | Experiencia Sumaq'">Producto</title>
+    <link rel="stylesheet" th:href="@{/css/sumaq.css}">
+    <script th:src="@{/js/operacion.js}" defer></script>
+</head>
+<body class="ops-page admin-page">
+<header th:replace="~{fragments/operacion :: cabecera(${seccionActiva})}"></header>
+<main class="ops-shell product-form-shell">
+    <a class="back-link" th:href="@{/admin}">← Volver a administración</a>
+    <header class="ops-heading"><div><p class="eyebrow" th:text="${esEdicion} ? 'Editar catálogo' : 'Nuevo registro'">Producto</p><h1 th:text="${esEdicion} ? 'Editar producto' : 'Crear producto'">Crear producto</h1><p>Los cambios de un producto disponible se reflejan inmediatamente en el menú público.</p></div></header>
+    <form class="admin-product-form" th:object="${productoForm}" th:action="${esEdicion} ? @{/admin/productos/{id}(id=${productoId})} : @{/admin/productos}" method="post">
+        <div class="form-grid">
+            <label>Nombre<input type="text" th:field="*{nombre}" maxlength="120" autocomplete="off" required><small class="field-error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</small></label>
+            <label>Categoría<select th:field="*{categoriaId}" required><option value="">Selecciona una categoría</option><option th:each="categoria : ${categorias}" th:value="${categoria.id()}" th:text="${categoria.nombre()}">Categoría</option></select><small class="field-error" th:if="${#fields.hasErrors('categoriaId')}" th:errors="*{categoriaId}">Error</small></label>
+            <label>Precio (S/)<input type="number" th:field="*{precio}" min="0.01" max="99999999.99" step="0.01" required><small class="field-error" th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}">Error</small></label>
+            <label>Calorías <span>(opcional)</span><input type="number" th:field="*{calorias}" min="0" max="5000" step="1"><small class="field-error" th:if="${#fields.hasErrors('calorias')}" th:errors="*{calorias}">Error</small></label>
+            <label class="full-field">Descripción<textarea th:field="*{descripcion}" rows="5" maxlength="500" required></textarea><small class="field-error" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}">Error</small></label>
+            <label class="full-field">Imagen local<select th:field="*{rutaImagen}" required><option value="">Selecciona una imagen</option><option value="/img/productos/entradas.svg">Entradas</option><option value="/img/productos/fondos.svg">Fondos</option><option value="/img/productos/bebidas.svg">Bebidas</option><option value="/img/productos/postres.svg">Postres</option></select><small class="field-hint">Solo se permiten recursos incluidos en la aplicación.</small><small class="field-error" th:if="${#fields.hasErrors('rutaImagen')}" th:errors="*{rutaImagen}">Error</small></label>
+        </div>
+        <div class="admin-form-actions"><a class="button button-outline" th:href="@{/admin}">Cancelar</a><button class="button" type="submit" th:text="${esEdicion} ? 'Guardar cambios' : 'Crear producto'">Guardar</button></div>
+    </form>
+</main>
+</body>
+</html>

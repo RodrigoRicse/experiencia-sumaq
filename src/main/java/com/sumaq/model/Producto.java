@@ -147,11 +147,18 @@ public class Producto {
         this.disponible = disponible;
     }
 
-    public void actualizar(Categoria categoria, String nombre, String descripcion, BigDecimal precio, String rutaImagen) {
+    public void actualizar(
+            Categoria categoria,
+            String nombre,
+            String descripcion,
+            BigDecimal precio,
+            String rutaImagen,
+            Integer calorias) {
         this.categoria = categoria;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.rutaImagen = rutaImagen;
+        this.calorias = calorias;
     }
 }

@@ -8,8 +8,30 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 ### Pendiente
 
-- Administración de productos y reporte básico.
 - Dockerfile y automatización operativa.
+
+## [0.6.0] - 2026-07-21
+
+### Añadido
+
+- Panel administrativo responsive conectado a MySQL.
+- Creación y edición de productos con validaciones del servidor.
+- Cambio de disponibilidad sin eliminar el historial de productos.
+- Reporte de pedidos, ingresos aprobados, ticket promedio y ventas por categoría.
+- Búsqueda de productos en el navegador sin dependencias externas.
+
+### Pruebas
+
+- Pruebas de servicios para productos y reportes.
+- Pruebas del controlador administrativo y formularios inválidos.
+- Verificación del acceso exclusivo del rol `ADMINISTRADOR`.
+- Flujo administrativo completo validado con MySQL real.
+
+### Seguridad
+
+- Recursos administrativos protegidos por rol y CSRF.
+- Rutas de imágenes limitadas a recursos locales permitidos.
+- Los pagos rechazados se excluyen de los indicadores de ventas.
 
 ## [0.5.0] - 2026-07-21
 
@@ -92,7 +114,8 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 - Migraciones Flyway iniciales y datos locales de demostración.
 - Estructura por capas y configuración por variables de entorno.
 
-[Unreleased]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.2.0...v0.3.0

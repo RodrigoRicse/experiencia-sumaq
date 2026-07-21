@@ -13,7 +13,8 @@
                th:classappend="${seccionActiva == 'cocina'} ? ' active'">Cocina</a>
             <a sec:authorize="hasAnyRole('CAJA','ADMINISTRADOR')" th:href="@{/caja}"
                th:classappend="${seccionActiva == 'caja'} ? ' active'">Caja</a>
-            <a sec:authorize="hasRole('ADMINISTRADOR')" th:href="@{/admin}">Administración</a>
+            <a sec:authorize="hasRole('ADMINISTRADOR')" th:href="@{/admin}"
+               th:classappend="${seccionActiva == 'admin'} ? ' active'">Administración</a>
         </nav>
         <div class="ops-user">
             <span><small>Sesión</small><strong sec:authentication="name">usuario</strong></span>
