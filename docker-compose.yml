@@ -1,4 +1,39 @@
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    image: experiencia-sumaq:${APP_VERSION:-local}
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-local}
+      DB_URL: ${APP_DB_URL:-jdbc:mysql://mysql:3306/${MYSQL_DATABASE:?Define MYSQL_DATABASE en el archivo .env}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima}
+      DB_USER: ${MYSQL_USER:?Define MYSQL_USER en el archivo .env}
+      DB_PASSWORD: ${MYSQL_PASSWORD:?Define MYSQL_PASSWORD en el archivo .env}
+      SERVER_PORT: 8080
+      LOG_PATH: /app/logs
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      JAVA_OPTS: ${JAVA_OPTS:--XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError}
+      SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-true}
+    ports:
+      - "${SERVER_PORT:-8080}:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - app_logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "--show-error", "http://localhost:8080/actuator/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - sumaq_network
+
   mysql:
     image: mysql:8.4
     restart: unless-stopped
@@ -15,7 +50,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      test: ["CMD-SHELL", "MYSQL_PWD=\"$${MYSQL_ROOT_PASSWORD}\" mysqladmin ping -h localhost -u root --silent"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -25,6 +60,7 @@ services:
 
 volumes:
   mysql_data:
+  app_logs:
 
 networks:
   sumaq_network:

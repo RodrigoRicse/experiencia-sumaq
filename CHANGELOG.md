@@ -8,7 +8,38 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 ### Pendiente
 
-- Dockerfile y automatización operativa.
+- Pruebas end-to-end en navegador y de carga.
+- Monitoreo centralizado y despliegue productivo con HTTPS.
+
+## [0.9.0] - 2026-07-21
+
+### Añadido
+
+- Dockerfile multietapa con compilación y ejecución Java 21.
+- Servicio de aplicación en Docker Compose con healthcheck y volumen de logs.
+- Configuración Logback con rotación por fecha y tamaño.
+- Scripts PowerShell para inicio, parada, salud, backup y restauración.
+- Planes técnicos de despliegue, monitoreo y mantenimiento.
+- Reportes iniciales de pruebas y seguridad.
+- Actualizaciones automáticas de dependencias mediante Dependabot.
+
+### Cambiado
+
+- GitHub Actions actualizado a acciones basadas en Node.js 24.
+- Cierre graceful y cookies seguras por defecto en el perfil `prod`.
+
+### Pruebas
+
+- 32 pruebas automatizadas aprobadas.
+- Construcción multietapa y ejecución con Temurin Java 21 verificadas.
+- Aplicación y MySQL verificados en estado `healthy`.
+- Backup y restauración real validados conservando los datos.
+
+### Seguridad
+
+- Contenedor ejecutado con usuario sin privilegios y `no-new-privileges`.
+- Healthcheck público; información y métricas restringidas a administración.
+- Secretos excluidos del contexto de construcción mediante `.dockerignore`.
 
 ## [0.6.0] - 2026-07-21
 
@@ -114,7 +145,8 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 - Migraciones Flyway iniciales y datos locales de demostración.
 - Estructura por capas y configuración por variables de entorno.
 
-[Unreleased]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.6.0...v0.9.0
 [0.6.0]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.3.0...v0.4.0
