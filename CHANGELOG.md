@@ -8,9 +8,31 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 ### Pendiente
 
-- Paneles operativos de cocina y caja.
 - Administración de productos y reporte básico.
 - Dockerfile y automatización operativa.
+
+## [0.5.0] - 2026-07-21
+
+### Añadido
+
+- Página de acceso personalizada para el personal interno.
+- Panel de cocina con pedidos pendientes, en preparación y listos.
+- Acciones para iniciar y completar la preparación de pedidos.
+- Búsqueda en caja mediante código único de recojo.
+- Verificación del pago y confirmación de entrega desde caja.
+- DTO de consulta separados del modelo persistente para las vistas operativas.
+
+### Pruebas
+
+- Pruebas de servicio y controladores para los flujos de cocina y caja.
+- Validación de acceso cruzado entre los roles `COCINA` y `CAJA`.
+- Recorrido completo cliente, cocina y caja validado con MySQL real.
+
+### Seguridad
+
+- Rutas internas protegidas por rol mediante Spring Security.
+- Cambios de estado protegidos con solicitudes POST y tokens CSRF.
+- Contraseñas internas verificadas desde MySQL mediante BCrypt.
 
 ## [0.4.0] - 2026-07-21
 
@@ -70,7 +92,8 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 - Migraciones Flyway iniciales y datos locales de demostración.
 - Estructura por capas y configuración por variables de entorno.
 
-[Unreleased]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.1.0...v0.2.0

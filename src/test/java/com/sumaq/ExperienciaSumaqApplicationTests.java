@@ -6,9 +6,11 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 
 @SpringBootTest(properties = "debug=false")
 @AutoConfigureMockMvc
@@ -28,6 +30,33 @@ class ExperienciaSumaqApplicationTests {
 				.andExpect(status().isOk());
 		mockMvc.perform(get("/menu"))
 				.andExpect(status().isOk());
+	}
+
+	@Test
+	void loginEsPublicoYCocinaRequiereAutenticacion() throws Exception {
+		mockMvc.perform(get("/login"))
+				.andExpect(status().isOk());
+		mockMvc.perform(get("/cocina"))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/login"));
+	}
+
+	@Test
+	@WithMockUser(username = "cocinero", roles = "COCINA")
+	void rolCocinaAccedeSoloASuPanel() throws Exception {
+		mockMvc.perform(get("/cocina"))
+				.andExpect(status().isOk());
+		mockMvc.perform(get("/caja"))
+				.andExpect(status().isForbidden());
+	}
+
+	@Test
+	@WithMockUser(username = "cajero", roles = "CAJA")
+	void rolCajaAccedeSoloASuPanel() throws Exception {
+		mockMvc.perform(get("/caja"))
+				.andExpect(status().isOk());
+		mockMvc.perform(get("/cocina"))
+				.andExpect(status().isForbidden());
 	}
 
 }

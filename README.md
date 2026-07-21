@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/RodrigoRicse/experiencia-sumaq/actions/workflows/ci.yml/badge.svg)](https://github.com/RodrigoRicse/experiencia-sumaq/actions/workflows/ci.yml)
 
-Versión actual: `0.4.0`.
+Versión actual: `0.5.0`.
 
 Aplicación web para gestionar el catálogo, los pedidos y la operación de cocina, caja y administración de Experiencia Sumaq.
 
@@ -26,13 +26,15 @@ Implementado:
 - Carrito persistente por sesión con modificación de cantidades y validación de disponibilidad.
 - Checkout público con validaciones, pago simulado, código de recojo y confirmación.
 - Autenticación del personal basada en usuarios MySQL y contraseñas BCrypt.
+- Acceso personalizado para el personal con autorización por roles.
+- Panel de cocina con pedidos pendientes, en preparación y listos.
+- Búsqueda y entrega de pedidos desde caja mediante código de recojo.
 - Actuator incorporado y preparado para `health`, `info` y `metrics`.
-- Pruebas iniciales del dominio y validación del contexto.
+- Pruebas del dominio, servicios, controladores y autorización por roles.
 
 Pendiente:
 
-- Paneles de cocina, caja y administración.
-- Página de acceso personalizada para el personal.
+- Panel de administración de productos y reporte básico.
 - Dockerfile de la aplicación y healthcheck del servicio web.
 - Scripts de operación, backup y restauración.
 - Documentación formal de despliegue, monitoreo, mantenimiento y seguridad.
@@ -109,6 +111,12 @@ Rutas públicas principales:
 - `/pedido/checkout`: datos del cliente y pago simulado.
 - `/pedido/confirmacion/{codigo}`: resultado y código de recojo.
 
+Rutas del personal:
+
+- `/login`: acceso del personal.
+- `/cocina`: gestión de preparación para `COCINA` y `ADMINISTRADOR`.
+- `/caja`: búsqueda y entrega para `CAJA` y `ADMINISTRADOR`.
+
 Para detener MySQL sin eliminar sus datos:
 
 ```powershell
@@ -121,7 +129,7 @@ docker compose stop mysql
 .\mvnw.cmd clean package
 ```
 
-El JAR ejecutable se genera en `target/experiencia-sumaq-0.4.0.jar`.
+El JAR ejecutable se genera en `target/experiencia-sumaq-0.5.0.jar`.
 
 ## Base de datos y Flyway
 
@@ -176,6 +184,9 @@ La suite actual comprueba:
 - Registro de pedido y pago simulado.
 - Validación de disponibilidad de producto.
 - Cambio válido de estado.
+- Consulta operativa de pedidos para cocina y caja.
+- Controladores de cocina y caja con protección CSRF.
+- Restricciones de acceso entre los roles `COCINA` y `CAJA`.
 - Arranque del contexto, migraciones Flyway y validación JPA con el perfil `test`.
 
 Ejecución:

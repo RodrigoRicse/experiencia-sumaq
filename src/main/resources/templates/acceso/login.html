@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title>Acceso del personal | Experiencia Sumaq</title>
+    <link rel="stylesheet" th:href="@{/css/sumaq.css}">
+</head>
+<body class="login-page">
+<main class="login-shell">
+    <section class="login-brand-panel">
+        <a class="brand light-brand" th:href="@{/}"><span class="brand-mark">S</span><span>Experiencia <strong>Sumaq</strong></span></a>
+        <div>
+            <p class="eyebrow light">Portal interno</p>
+            <h1>Una operación clara, una experiencia memorable.</h1>
+            <p>Acceso exclusivo para cocina, caja y administración.</p>
+        </div>
+        <small>No compartas tus credenciales ni utilices usuarios de demostración en producción.</small>
+    </section>
+    <section class="login-form-panel">
+        <form th:action="@{/login}" method="post" class="login-form">
+            <p class="eyebrow">Bienvenido</p>
+            <h2>Iniciar sesión</h2>
+            <p>Ingresa con tu cuenta asignada.</p>
+            <div class="login-alert error" th:if="${param.error}" role="alert">Usuario o contraseña incorrectos.</div>
+            <div class="login-alert" th:if="${param.logout}" role="status">La sesión se cerró correctamente.</div>
+            <label>Usuario
+                <input type="text" name="username" autocomplete="username" required autofocus maxlength="60">
+            </label>
+            <label>Contraseña
+                <input type="password" name="password" autocomplete="current-password" required>
+            </label>
+            <button class="button" type="submit">Ingresar al portal</button>
+            <a class="back-link login-back" th:href="@{/}">← Regresar al sitio público</a>
+        </form>
+    </section>
+</main>
+</body>
+</html>

@@ -2,7 +2,6 @@ package com.sumaq.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,17 +14,22 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
-                                "/", "/menu", "/carrito/**", "/pedido/**",
+                                "/", "/menu", "/carrito/**", "/pedido/**", "/login",
                                 "/css/**", "/js/**", "/img/**", "/favicon.ico",
                                 "/actuator/health")
                         .permitAll()
                         .requestMatchers("/admin/**", "/actuator/info", "/actuator/metrics/**")
                         .hasRole("ADMINISTRADOR")
-                        .requestMatchers("/cocina/**").hasRole("COCINA")
-                        .requestMatchers("/caja/**").hasRole("CAJA")
+                        .requestMatchers("/cocina/**").hasAnyRole("COCINA", "ADMINISTRADOR")
+                        .requestMatchers("/caja/**").hasAnyRole("CAJA", "ADMINISTRADOR")
                         .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
-                .logout(Customizer.withDefaults());
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/personal", true)
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll());
         return http.build();
     }
 
