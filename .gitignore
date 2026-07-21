@@ -1,0 +1,28 @@
+# Maven
+/target/
+*.class
+
+# Node and preserved prototype local state
+node_modules/
+*.local
+
+# Environment and local configuration
+.env
+.env.*
+!.env.example
+application-local.yml
+
+# Runtime files
+logs/
+*.log
+
+# IDE and operating system
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Temporary scaffold files
+/.scaffold-tmp/
+/*.zip
