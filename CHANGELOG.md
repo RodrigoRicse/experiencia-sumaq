@@ -6,6 +6,10 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 ## [Unreleased]
 
+### Corregido
+
+- Se hicieron explícitas las garantías de no nulidad en operaciones funcionales para evitar diagnósticos ambiguos de JDT.
+
 ### Cambiado
 
 - El resumen del checkout permite aumentar, reducir y quitar productos sin perder los datos escritos en el formulario.

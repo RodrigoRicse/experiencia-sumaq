@@ -6,6 +6,7 @@ import org.springframework.web.context.annotation.SessionScope;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 @SessionScope
@@ -36,7 +37,10 @@ public class CarritoSesion {
     }
 
     public int cantidadTotal() {
-        return cantidades.values().stream().mapToInt(Integer::intValue).sum();
+        return cantidades.values().stream()
+                .mapToInt(cantidad -> Objects.requireNonNull(
+                        cantidad, "La cantidad del carrito no puede ser nula").intValue())
+                .sum();
     }
 
     public boolean estaVacio() {

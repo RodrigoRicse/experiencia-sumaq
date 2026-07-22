@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "pedidos")
@@ -109,8 +110,11 @@ public class Pedido {
 
     public BigDecimal recalcularTotal() {
         subtotal = detalles.stream()
-                .map(DetallePedido::getSubtotal)
-                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .map(detalle -> Objects.requireNonNull(
+                        detalle, "El pedido no admite detalles nulos").getSubtotal())
+                .reduce(BigDecimal.ZERO, (acumulado, valor) -> Objects.requireNonNull(
+                        acumulado, "El subtotal acumulado no puede ser nulo").add(
+                                Objects.requireNonNull(valor, "El subtotal del detalle no puede ser nulo")))
                 .setScale(2);
         total = subtotal;
         return total;

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ProductoService {
@@ -117,7 +118,8 @@ public class ProductoService {
 
     private Categoria obtenerCategoria(Long categoriaId) {
         return categoriaRepository.findById(categoriaId)
-                .filter(Categoria::isActiva)
+                .filter(categoria -> Objects.requireNonNull(
+                        categoria, "La categoría consultada no puede ser nula").isActiva())
                 .orElseThrow(() -> new RecursoNoEncontradoException("Categoría no encontrada: " + categoriaId));
     }
 
