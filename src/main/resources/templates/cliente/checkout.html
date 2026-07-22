@@ -72,17 +72,42 @@
             <button class="button checkout-submit" type="submit">Confirmar y generar código de recojo</button>
         </form>
 
-        <aside class="order-summary" aria-labelledby="summary-title">
+        <aside class="order-summary" aria-labelledby="summary-title" data-checkout-cart>
             <p class="eyebrow">Resumen</p>
             <h2 id="summary-title">Tu pedido</h2>
+            <p class="summary-feedback" role="status" aria-live="polite" data-cart-feedback></p>
             <div class="summary-items">
-                <article th:each="item : ${carrito.items()}">
+                <article th:each="item : ${carrito.items()}" data-cart-item
+                         th:attr="data-product-id=${item.productoId()}">
                     <img th:src="@{${item.rutaImagen()}}" th:alt="|Miniatura de ${item.nombre()}|">
-                    <div><h3 th:text="${item.nombre()}">Producto</h3><p th:text="|Cantidad: ${item.cantidad()}|">Cantidad: 1</p></div>
-                    <strong th:text="|S/ ${#numbers.formatDecimal(item.subtotal(), 1, 2)}|">S/ 0.00</strong>
+                    <div class="summary-item-info">
+                        <h3 th:text="${item.nombre()}">Producto</h3>
+                        <div class="checkout-quantity-actions">
+                            <form class="checkout-cart-form" data-cart-operation="decrease"
+                                  th:action="@{/carrito/items/{id}/cantidad(id=${item.productoId()})}" method="post">
+                                <input type="hidden" name="cantidad" th:value="${item.cantidad() - 1}">
+                                <input type="hidden" name="origen" value="checkout">
+                                <button type="submit" th:aria-label="|Reducir cantidad de ${item.nombre()}|">−</button>
+                            </form>
+                            <span data-item-quantity th:text="${item.cantidad()}">1</span>
+                            <form class="checkout-cart-form" data-cart-operation="increase"
+                                  th:action="@{/carrito/items/{id}/cantidad(id=${item.productoId()})}" method="post">
+                                <input type="hidden" name="cantidad" th:value="${item.cantidad() + 1}">
+                                <input type="hidden" name="origen" value="checkout">
+                                <button type="submit" th:disabled="${item.cantidad() >= 20}"
+                                        th:aria-label="|Aumentar cantidad de ${item.nombre()}|">＋</button>
+                            </form>
+                            <form class="checkout-cart-form checkout-remove-item" data-cart-operation="remove"
+                                  th:action="@{/carrito/items/{id}/eliminar(id=${item.productoId()})}" method="post">
+                                <input type="hidden" name="origen" value="checkout">
+                                <button type="submit" th:aria-label="|Quitar ${item.nombre()} del carrito|">Quitar</button>
+                            </form>
+                        </div>
+                    </div>
+                    <strong data-item-subtotal th:text="|S/ ${#numbers.formatDecimal(item.subtotal(), 1, 2)}|">S/ 0.00</strong>
                 </article>
             </div>
-            <div class="summary-total"><span>Total</span><strong th:text="|S/ ${#numbers.formatDecimal(carrito.total(), 1, 2)}|">S/ 0.00</strong></div>
+            <div class="summary-total"><span>Total</span><strong data-cart-total th:text="|S/ ${#numbers.formatDecimal(carrito.total(), 1, 2)}|">S/ 0.00</strong></div>
             <p class="summary-note">El monto se recalculará en el servidor antes de registrar el pedido.</p>
         </aside>
     </div>

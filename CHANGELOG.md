@@ -6,6 +6,15 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 ## [Unreleased]
 
+### Cambiado
+
+- El resumen del checkout permite aumentar, reducir y quitar productos sin perder los datos escritos en el formulario.
+- El campo de observaciones solo puede redimensionarse verticalmente y conserva límites adecuados para el diseño responsive.
+
+### Pruebas
+
+- Se añadieron pruebas MVC y de integración para la edición del carrito y su protección CSRF.
+
 ### Pendiente
 
 - Pruebas end-to-end en navegador y de carga.
