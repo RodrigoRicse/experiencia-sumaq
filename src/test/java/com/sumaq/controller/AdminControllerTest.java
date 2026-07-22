@@ -1,6 +1,5 @@
 package com.sumaq.controller;
 
-import com.sumaq.dto.ProductoFormDto;
 import com.sumaq.dto.ReporteAdminDto;
 import com.sumaq.service.ProductoService;
 import com.sumaq.service.ReporteService;
@@ -12,7 +11,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
