@@ -9,8 +9,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @SpringBootTest(properties = "debug=false")
 @AutoConfigureMockMvc
@@ -30,6 +33,21 @@ class ExperienciaSumaqApplicationTests {
 				.andExpect(status().isOk());
 		mockMvc.perform(get("/menu"))
 				.andExpect(status().isOk());
+	}
+
+	@Test
+	void actualizacionDinamicaDelCarritoEsPublicaYRequiereCsrf() throws Exception {
+		mockMvc.perform(post("/carrito/items/7/cantidad")
+					.header("X-Requested-With", "XMLHttpRequest")
+					.param("cantidad", "2"))
+				.andExpect(status().isForbidden());
+
+		mockMvc.perform(post("/carrito/items/7/cantidad")
+					.with(csrf())
+					.header("X-Requested-With", "XMLHttpRequest")
+					.param("cantidad", "2"))
+				.andExpect(handler().methodName("actualizarDesdeCheckout"))
+				.andExpect(status().isNotFound());
 	}
 
 	@Test
