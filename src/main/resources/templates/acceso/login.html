@@ -6,6 +6,7 @@
     <meta name="robots" content="noindex">
     <title>Acceso del personal | Experiencia Sumaq</title>
     <link rel="stylesheet" th:href="@{/css/sumaq.css}">
+    <script th:src="@{/js/sumaq.js}" defer></script>
 </head>
 <body class="login-page">
 <main class="login-shell">
@@ -19,12 +20,11 @@
         <small>No compartas tus credenciales ni utilices usuarios de demostración en producción.</small>
     </section>
     <section class="login-form-panel">
-        <form th:action="@{/login}" method="post" class="login-form">
+        <form th:action="@{/login}" method="post" class="login-form" data-login-form>
             <p class="eyebrow">Bienvenido</p>
             <h2>Iniciar sesión</h2>
             <p>Ingresa con tu cuenta asignada.</p>
-            <div class="login-alert error" th:if="${param.error}" role="alert">Usuario o contraseña incorrectos.</div>
-            <div class="login-alert" th:if="${param.logout}" role="status">La sesión se cerró correctamente.</div>
+            <div class="login-alert error" th:if="${param.error}" role="alert" data-login-error>Usuario o contraseña incorrectos.</div>
             <label>Usuario
                 <input type="text" name="username" autocomplete="username" required autofocus maxlength="60">
             </label>
@@ -36,5 +36,6 @@
         </form>
     </section>
 </main>
+<div class="toast" role="status" aria-live="polite" aria-atomic="true" th:if="${param.logout}">La sesión se cerró correctamente.</div>
 </body>
 </html>
