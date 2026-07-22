@@ -26,6 +26,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
 
+    const loginForm = document.querySelector('[data-login-form]');
+    const loginError = loginForm?.querySelector('[data-login-error]');
+    if (loginForm && loginError) {
+        const fields = [...loginForm.querySelectorAll('input[name="username"], input[name="password"]')];
+        const clearLoginError = () => {
+            loginError.remove();
+            fields.forEach((field) => field.removeEventListener('input', clearLoginError));
+
+            const url = new URL(window.location.href);
+            if (url.searchParams.delete('error')) {
+                window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+            }
+        };
+        fields.forEach((field) => field.addEventListener('input', clearLoginError));
+    }
+
     const checkoutCart = document.querySelector('[data-checkout-cart]');
     if (checkoutCart) {
         const feedback = checkoutCart.querySelector('[data-cart-feedback]');

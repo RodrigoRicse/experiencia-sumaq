@@ -14,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(properties = "debug=false")
 @AutoConfigureMockMvc
@@ -57,6 +58,26 @@ class ExperienciaSumaqApplicationTests {
 		mockMvc.perform(get("/cocina"))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/login"));
+	}
+
+	@Test
+	void loginReiniciaElErrorYMuestraLogoutFueraDelFormulario() throws Exception {
+		String loginConError = mockMvc.perform(get("/login").param("error", "true"))
+				.andExpect(status().isOk())
+				.andReturn().getResponse().getContentAsString();
+		assertThat(loginConError)
+				.contains("data-login-form", "data-login-error", "/js/sumaq.js");
+
+		String loginConLogout = mockMvc.perform(get("/login").param("logout", "true"))
+				.andExpect(status().isOk())
+				.andReturn().getResponse().getContentAsString();
+		int cierreFormulario = loginConLogout.indexOf("</form>");
+		int mensajeLogout = loginConLogout.indexOf("La sesión se cerró correctamente.");
+		assertThat(cierreFormulario).isGreaterThan(0);
+		assertThat(mensajeLogout).isGreaterThan(cierreFormulario);
+		assertThat(loginConLogout.substring(0, cierreFormulario))
+				.doesNotContain("La sesión se cerró correctamente.");
+		assertThat(loginConLogout).contains("class=\"toast\"", "role=\"status\"");
 	}
 
 	@Test
