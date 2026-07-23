@@ -222,6 +222,7 @@ La suite actual comprueba:
 - Consulta operativa de pedidos para cocina y caja.
 - Controladores de cocina y caja con protección CSRF.
 - Restricciones de acceso entre los roles `COCINA` y `CAJA`.
+- Páginas personalizadas para respuestas 403, 404 y 5xx, sin detalles técnicos.
 - Creación y validación de productos administrativos.
 - Cálculo del reporte de ventas aprobadas.
 - Controlador administrativo y restricción del rol `ADMINISTRADOR`.

@@ -6,6 +6,8 @@ Fecha de referencia: 21 de julio de 2026.
 
 Resultado del candidato `0.9.0`: 32 pruebas, 0 fallos y 0 errores.
 
+Estado actual al 23 de julio de 2026: 39 pruebas, 0 fallos y 0 errores. La cobertura añadida después del candidato incluye edición dinámica del carrito, feedback de login y páginas HTTP 403, 404 y 5xx.
+
 La suite incluye pruebas para:
 
 - cálculo de total y código de recojo;

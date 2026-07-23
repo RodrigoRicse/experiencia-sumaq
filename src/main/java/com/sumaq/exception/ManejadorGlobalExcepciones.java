@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.UUID;
 
@@ -40,13 +41,20 @@ public class ManejadorGlobalExcepciones {
         return "error/estado";
     }
 
+    @ExceptionHandler(NoResourceFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String paginaNoEncontrada() {
+        return "error/404";
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String errorNoControlado(Exception exception, Model model) {
         String codigoError = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         LOG.error("Error web no controlado, referencia={}", codigoError, exception);
         model.addAttribute("titulo", "Ocurrió un problema inesperado");
-        model.addAttribute("mensaje", "Inténtalo nuevamente. Si continúa, informa la referencia " + codigoError + ".");
-        return "error/estado";
+        model.addAttribute("mensaje", "Inténtalo nuevamente. Si el problema continúa, comunica la referencia mostrada.");
+        model.addAttribute("referencia", codigoError);
+        return "error/5xx";
     }
 }

@@ -8,6 +8,7 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 ### Corregido
 
+- Los errores HTTP 403, 404 y 5xx ahora muestran páginas propias acordes al diseño, sin recurrir a Whitelabel.
 - Se hicieron explícitas las garantías de no nulidad en operaciones funcionales para evitar diagnósticos ambiguos de JDT.
 - El error de acceso se limpia al editar las credenciales y el cierre de sesión utiliza el toast global fuera del formulario.
 

@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex">
-    <title>Error | Experiencia Sumaq</title>
+    <title>Error inesperado | Experiencia Sumaq</title>
     <link rel="stylesheet" th:href="@{/css/sumaq.css}">
 </head>
 <body class="confirmation-page">
 <main class="confirmation-shell">
     <section th:replace="~{fragments/error :: estado(
-            '!', ${titulo}, ${mensaje},
-            '/menu', 'Volver al menú', '/', 'Ir al inicio')}"></section>
+            '500', ${titulo}, ${mensaje},
+            '/', 'Ir al inicio', '/personal', 'Volver a mi panel')}"></section>
 </main>
 </body>
 </html>
