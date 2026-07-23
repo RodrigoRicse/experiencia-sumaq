@@ -258,6 +258,11 @@ h1, h2, h3 {
 .confirmation-data dd { margin: 3px 0 0; color: var(--green-800); font-size: .78rem; font-weight: 850; }
 .confirmation-actions { justify-content: center; }
 .button-outline { color: var(--green-800); background: transparent; box-shadow: none; }
+.error-state-card { position: relative; overflow: hidden; }
+.error-state-card::before { content: ''; position: absolute; inset: 0 0 auto; height: 7px; background: linear-gradient(90deg, var(--coral), var(--gold)); }
+.error-code { width: fit-content; margin: 0 auto 24px; padding: 10px 18px; border: 1px solid #d9a096; border-radius: 999px; color: #8b3b32; background: #f9e5e0; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 1.25rem; font-weight: 900; letter-spacing: .12em; }
+.confirmation-card > .error-reference { margin-top: -10px; font-size: .78rem; }
+.error-reference strong { color: var(--green-950); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .08em; }
 
 .site-footer { border-top: 1px solid var(--line); background: #eee8da; }
 .footer-shell { width: min(1180px, calc(100% - 48px)); margin: auto; padding: 55px 0; display: grid; grid-template-columns: 1.4fr 1fr auto; gap: 40px; align-items: center; }

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<section class="confirmation-card rejected error-state-card"
+         th:fragment="estado(codigo, titulo, mensaje, accionPrincipalUrl, accionPrincipalTexto, accionSecundariaUrl, accionSecundariaTexto)">
+    <div class="error-code" aria-hidden="true" th:text="${codigo}">404</div>
+    <p class="eyebrow">Experiencia Sumaq</p>
+    <h1 th:text="${titulo ?: 'No pudimos completar la operación'}">No pudimos completar la operación</h1>
+    <p th:text="${mensaje ?: 'Inténtalo nuevamente.'}">Inténtalo nuevamente.</p>
+    <p class="error-reference" th:if="${referencia}">
+        Referencia: <strong th:text="${referencia}">XXXXXXXX</strong>
+    </p>
+    <div class="button-row confirmation-actions">
+        <a class="button" th:href="${accionPrincipalUrl}" th:text="${accionPrincipalTexto}">Continuar</a>
+        <a class="button button-outline" th:href="${accionSecundariaUrl}" th:text="${accionSecundariaTexto}">Volver</a>
+    </div>
+</section>
+</body>
+</html>

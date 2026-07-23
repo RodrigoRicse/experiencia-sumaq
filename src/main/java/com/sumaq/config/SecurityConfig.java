@@ -1,5 +1,6 @@
 package com.sumaq.config;
 
+import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,6 +14,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize -> authorize
+                        .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers(
                                 "/", "/menu", "/carrito/**", "/pedido/**", "/login",
                                 "/css/**", "/js/**", "/img/**", "/favicon.ico",
@@ -23,6 +25,8 @@ public class SecurityConfig {
                         .requestMatchers("/cocina/**").hasAnyRole("COCINA", "ADMINISTRADOR")
                         .requestMatchers("/caja/**").hasAnyRole("CAJA", "ADMINISTRADOR")
                         .anyRequest().authenticated())
+                .exceptionHandling(exceptions -> exceptions
+                        .accessDeniedPage("/error/403"))
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/personal", true)

@@ -4,21 +4,28 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.stereotype.Controller;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsString;
 
 @SpringBootTest(properties = "debug=false")
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Import(ExperienciaSumaqApplicationTests.ControladorErrorPrueba.class)
 class ExperienciaSumaqApplicationTests {
 
 	@Autowired
@@ -98,7 +105,30 @@ class ExperienciaSumaqApplicationTests {
 		mockMvc.perform(get("/cocina"))
 				.andExpect(status().isOk());
 		mockMvc.perform(get("/caja"))
-				.andExpect(status().isForbidden());
+				.andExpect(status().isForbidden())
+				.andExpect(forwardedUrl("/error/403"));
+		mockMvc.perform(get("/error/403"))
+				.andExpect(status().isForbidden())
+				.andExpect(content().string(containsString("Acceso restringido")));
+	}
+
+	@Test
+	@WithMockUser(username = "administrador", roles = "ADMINISTRADOR")
+	void rutaInexistenteMuestraPagina404() throws Exception {
+		mockMvc.perform(get("/ruta-que-no-existe"))
+				.andExpect(status().isNotFound())
+				.andExpect(content().string(containsString("No encontramos esta página")));
+	}
+
+	@Test
+	@WithMockUser(username = "administrador", roles = "ADMINISTRADOR")
+	void errorInesperadoMuestraPagina500SinDetalleTecnico() throws Exception {
+		mockMvc.perform(get("/__test/error"))
+				.andExpect(status().isInternalServerError())
+				.andExpect(content().string(containsString("Ocurrió un problema inesperado")))
+				.andExpect(content().string(containsString("Referencia:")))
+				.andExpect(content().string(org.hamcrest.Matchers.not(
+						containsString("Fallo técnico de prueba"))));
 	}
 
 	@Test
@@ -136,6 +166,15 @@ class ExperienciaSumaqApplicationTests {
 	void rolCocinaNoAccedeAAdministracion() throws Exception {
 		mockMvc.perform(get("/admin"))
 				.andExpect(status().isForbidden());
+	}
+
+	@Controller
+	static class ControladorErrorPrueba {
+
+		@GetMapping("/__test/error")
+		String error() {
+			throw new IllegalStateException("Fallo técnico de prueba");
+		}
 	}
 
 }
