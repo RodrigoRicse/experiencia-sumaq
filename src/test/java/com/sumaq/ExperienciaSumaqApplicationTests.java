@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -156,7 +157,11 @@ class ExperienciaSumaqApplicationTests {
 	@WithMockUser(username = "administrador", roles = "ADMINISTRADOR")
 	void rolAdministradorConsultaInfoYMetricas() throws Exception {
 		mockMvc.perform(get("/actuator/info"))
-				.andExpect(status().isOk());
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.application.name").value("Experiencia Sumaq"))
+				.andExpect(jsonPath("$.application.description")
+						.value("Sistema web de pedidos y gestión operativa"))
+				.andExpect(jsonPath("$.application.java-target").value(21));
 		mockMvc.perform(get("/actuator/metrics"))
 				.andExpect(status().isOk());
 	}
