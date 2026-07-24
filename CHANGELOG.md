@@ -16,6 +16,7 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 - El resumen del checkout permite aumentar, reducir y quitar productos sin perder los datos escritos en el formulario.
 - El campo de observaciones solo puede redimensionarse verticalmente y conserva límites adecuados para el diseño responsive.
+- Actuator publica en `/actuator/info` la información declarada de la aplicación para usuarios administradores.
 
 ### Pruebas
 
