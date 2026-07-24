@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.sumaq</groupId>
 	<artifactId>experiencia-sumaq</artifactId>
-	<version>0.9.0</version>
+	<version>1.0.0</version>
 	<name>Experiencia Sumaq</name>
 	<description>Sistema web para gestion de pedidos de Experiencia Sumaq</description>
 	<url/>

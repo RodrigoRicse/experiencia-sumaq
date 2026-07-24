@@ -1,6 +1,6 @@
 # Reporte de seguridad
 
-Fecha de referencia: 21 de julio de 2026.
+Fecha de referencia: 24 de julio de 2026.
 
 ## Controles implementados
 
@@ -14,6 +14,17 @@ Fecha de referencia: 21 de julio de 2026.
 - Contenedor de aplicación ejecutado con usuario sin privilegios y `no-new-privileges`.
 - Cookies de sesión `HttpOnly`, `SameSite=Lax` y `Secure` por defecto en producción.
 - Logs sin contraseñas ni información completa de pagos.
+- Páginas HTTP 403, 404 y 5xx sin exposición de excepciones o trazas técnicas.
+- Información y métricas de Actuator restringidas al rol `ADMINISTRADOR`.
+
+## Verificaciones realizadas
+
+- Inicio de sesión correcto e incorrecto y limpieza inmediata del feedback al editar credenciales.
+- Acceso cruzado denegado para los roles de cocina, caja y administración.
+- Contraseñas persistidas como hashes BCrypt sin exponer su contenido completo.
+- Solicitudes que modifican estado protegidas mediante CSRF.
+- Entradas inválidas rechazadas por Jakarta Validation.
+- Archivos `.env`, backups, logs y artefactos de construcción excluidos de Git.
 
 ## Riesgos y decisiones
 
@@ -23,7 +34,7 @@ Fecha de referencia: 21 de julio de 2026.
 - El archivo `.env` no se versiona, pero sigue siendo un secreto local que requiere permisos adecuados.
 - Docker Compose es apropiado para el MVP; no reemplaza un gestor de secretos ni una plataforma de alta disponibilidad.
 
-## Pendientes
+## Mejoras futuras fuera del alcance 1.0.0
 
 - Automatizar análisis de dependencias y de imagen.
 - Añadir límites de intentos de autenticación y política de bloqueo.

@@ -2,7 +2,9 @@
 
 [![CI](https://github.com/RodrigoRicse/experiencia-sumaq/actions/workflows/ci.yml/badge.svg)](https://github.com/RodrigoRicse/experiencia-sumaq/actions/workflows/ci.yml)
 
-Versión actual: `0.9.0`.
+Versión actual: `1.0.0`.
+
+La versión `1.0.0` representa la entrega final funcional del MVP académico. Las mejoras de operación productiva permanecen documentadas como evolución posterior.
 
 Aplicación web para gestionar el catálogo, los pedidos y la operación de cocina, caja y administración de Experiencia Sumaq.
 
@@ -31,16 +33,16 @@ Implementado:
 - Búsqueda y entrega de pedidos desde caja mediante código de recojo.
 - Administración de productos con creación, edición y cambio de disponibilidad.
 - Reporte básico de pedidos, ingresos aprobados y ventas por categoría.
-- Actuator incorporado y preparado para `health`, `info` y `metrics`.
+- Actuator configurado para `health`, `info` y `metrics`, con información y métricas restringidas a administración.
 - Dockerfile multietapa con Java 21 y usuario sin privilegios.
 - Docker Compose con aplicación, MySQL, healthchecks y volúmenes persistentes.
 - Logs rotados con Logback y configuración mediante variables de entorno.
 - Scripts PowerShell de operación, salud, backup y restauración.
 - Planes de despliegue, monitoreo, mantenimiento, pruebas y seguridad.
 - Dependabot para Maven, Docker y GitHub Actions.
-- Pruebas del dominio, servicios, controladores y autorización por roles.
+- 39 pruebas automatizadas del dominio, servicios, controladores, seguridad y autorización por roles.
 
-Pendiente:
+Mejoras posteriores:
 
 - Automatización de pruebas end-to-end en navegador y pruebas de carga.
 - Proxy HTTPS, gestor externo de secretos y monitoreo centralizado para producción.
@@ -163,7 +165,7 @@ Para producción establece `SPRING_PROFILES_ACTIVE=prod`, utiliza una base separ
 .\mvnw.cmd clean package
 ```
 
-El JAR ejecutable se genera en `target/experiencia-sumaq-0.9.0.jar`.
+El JAR ejecutable se genera en `target/experiencia-sumaq-1.0.0.jar`.
 
 ## Base de datos y Flyway
 

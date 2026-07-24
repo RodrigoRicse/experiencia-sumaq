@@ -6,6 +6,8 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-07-24
+
 ### Corregido
 
 - Los errores HTTP 403, 404 y 5xx ahora muestran páginas propias acordes al diseño, sin recurrir a Whitelabel.
@@ -21,11 +23,14 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 ### Pruebas
 
 - Se añadieron pruebas MVC y de integración para la edición del carrito y su protección CSRF.
+- La suite final ejecuta 39 pruebas automatizadas, sin fallos, errores ni pruebas omitidas.
+- Se verificaron con MySQL real el flujo cliente, cocina y caja, la administración, Actuator y la restauración de backups.
 
-### Pendiente
+### Seguridad
 
-- Pruebas end-to-end en navegador y de carga.
-- Monitoreo centralizado y despliegue productivo con HTTPS.
+- Las páginas de error no exponen excepciones ni detalles técnicos y mantienen códigos HTTP coherentes.
+- Se verificaron autenticación, autorización por roles, BCrypt, CSRF y validación del lado del servidor.
+- `/actuator/info` y `/actuator/metrics` permanecen restringidos al rol `ADMINISTRADOR`.
 
 ## [0.9.0] - 2026-07-21
 
@@ -161,7 +166,8 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 - Migraciones Flyway iniciales y datos locales de demostración.
 - Estructura por capas y configuración por variables de entorno.
 
-[Unreleased]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.9.0...HEAD
+[Unreleased]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.9.0...v1.0.0
 [0.9.0]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.6.0...v0.9.0
 [0.6.0]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/RodrigoRicse/experiencia-sumaq/compare/v0.4.0...v0.5.0
