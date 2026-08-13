@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jdk-jammy AS build
+FROM eclipse-temurin:25-jdk-jammy AS build
 
 WORKDIR /workspace
 COPY .mvn/ .mvn/
@@ -8,7 +8,7 @@ RUN chmod +x mvnw && ./mvnw --batch-mode --no-transfer-progress dependency:go-of
 COPY src/ src/
 RUN ./mvnw --batch-mode --no-transfer-progress package -DskipTests
 
-FROM eclipse-temurin:21-jre-jammy AS runtime
+FROM eclipse-temurin:25-jre-jammy AS runtime
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -y curl \
