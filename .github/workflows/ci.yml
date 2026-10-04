@@ -43,7 +43,7 @@ jobs:
         run: ./mvnw --batch-mode --no-transfer-progress package -DskipTests
 
       - name: Publicar JAR de CI
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: experiencia-sumaq-${{ github.sha }}
           path: target/experiencia-sumaq-*.jar
